@@ -3,9 +3,9 @@ import Category from '../models/category.model';
 import Product from '../models/product.model';
 
 export const createCategory = async (req: Request, res: Response) => {
-  const { name, description } = req.body;
+  const { name, description, thumbnail } = req.body;
   try {
-    const newCategory = new Category({ name, description });
+    const newCategory = new Category({ name, description, thumbnail });
     const savedCategory = await newCategory.save();
     res.status(201).json(savedCategory);
   } catch (error) {
@@ -24,9 +24,9 @@ export const getCategories = async (req: Request, res: Response) => {
 
 export const updateCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, description } = req.body;
+  const { name, description, thumbnail } = req.body;
   try {
-    const updatedCategory = await Category.findByIdAndUpdate(id, { name, description }, { new: true });
+    const updatedCategory = await Category.findByIdAndUpdate(id, { name, description, thumbnail }, { new: true });
     if (!updatedCategory) return res.status(404).json({ message: 'Category not found' });
     res.status(200).json(updatedCategory);
   } catch (error) {

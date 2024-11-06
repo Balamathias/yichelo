@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/', getProducts as any);
 router.get('/:id', getProductById as any);
-router.post('/', verifyAdmin, addProduct);
+router.post('/', verifyAdmin, addProduct as any);
 router.put('/:id', verifyAdmin, updateProduct as any);
 router.delete('/:id', verifyAdmin, deleteProduct as any);
 router.get('/search/suggestions', getSearchSuggestions as any);

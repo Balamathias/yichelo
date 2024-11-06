@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response) => {
     res.status(201).json({ message: 'Account created successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error });
   }
 };
 
@@ -51,6 +51,36 @@ export const login = async (req: Request, res: Response) => {
     res.json({ message: 'Logged in successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken');
+  res.json({ message: 'Logged out successfully' });
+};
+
+export const refreshTokens = async (req: Request, res: Response) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) return res.status(401).json({ message: 'Refresh token missing' });
+
+  try {
+    const decoded: any = jwt.verify(token, JWT_REFRESH_SECRET);
+    const user = await User.findById(decoded?.userId);
+
+    if (!user) return res.status(403).json({ message: 'Forbidden' });
+
+    const accessToken = generateAccessToken(user._id?.toString() || '');
+    const refreshToken = generateRefreshToken(user._id?.toString() || '');
+
+    res.cookie('accessToken', accessToken, { httpOnly: true, secure: true });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+
+    res.json({ message: 'Tokens refreshed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error });
   }
 };
