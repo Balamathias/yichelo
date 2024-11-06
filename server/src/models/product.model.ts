@@ -10,6 +10,7 @@ export interface IProduct extends Document {
   category: Types.ObjectId;
   tags?: string[];
   rating?: number;
+  badge?: string;
 }
 
 const ProductSchema: Schema = new Schema({
@@ -22,6 +23,7 @@ const ProductSchema: Schema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
   tags: { type: [String], default: [] },
   rating: { type: Number, default: 0 },
+  badge: { type: String, required: false },
 }, { timestamps: true });
 
 ProductSchema.index({ name: 'text', description: 'text' });
