@@ -8,7 +8,7 @@ const Page = async () => {
       <h1 className='text-2xl font-bold'>Dashboard</h1>
       <div className='flex flex-col gap-y-5'>
         <div>
-          <h2 className='text-xl font-semibold'>Hi {user?.email}</h2>
+          <h2 className='text-xl font-semibold'>Hi {user?.username}</h2>
           <p className='text-muted-foreground'>This is your dashboard. You can manage your account, view your orders, and much more.</p>
         </div>
       </div>

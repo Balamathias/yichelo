@@ -100,7 +100,7 @@ export const me = async (req: Request, res: Response) => {
   try {
     if (!req?.user) return res.status(403).json({ message: 'Forbidden' });
 
-    res.json({ user: req.user });
+    res.json({ data: req.user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error', error });

@@ -67,13 +67,13 @@ export const getUser = async (): Promise<User | null> => {
       return null;
     }
 
-    const response = await api.get<User>('/auth/me', {
+    const response = await api.get<{data: User | null}>('/auth/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return response.data;
+    return response?.data?.data ?? null;
   } catch (error: any) {
     if (error.response) {
       console.error('Get user failed with response error:', error.response.status, error.response.data);
