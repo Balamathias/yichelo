@@ -1,4 +1,5 @@
 import { getUser } from '@/actions/auth.actions';
+import { ModeToggle } from '@/components/theme-toggle';
 import React from 'react'
 
 const Page = async () => {
@@ -10,6 +11,7 @@ const Page = async () => {
         <div>
           <h2 className='text-xl font-semibold'>Hi {user?.username}</h2>
           <p className='text-muted-foreground'>This is your dashboard. You can manage your account, view your orders, and much more.</p>
+          <ModeToggle />
         </div>
       </div>
     </div>

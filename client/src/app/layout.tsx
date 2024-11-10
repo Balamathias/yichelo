@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Inter } from 'next/font/google'
 import "./globals.css";
 import { BRAND_NAME, cn } from "@/lib/utils";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 const inter = Inter({
   variable: "--flow-circular",
@@ -27,7 +28,9 @@ export default function RootLayout({
         className={cn(`antialiased`, inter.className)}
         suppressHydrationWarning
       >
-        {children}
+        <ThemeProvider>
+            {children}
+        </ThemeProvider>
       </body>
     </html>
   );

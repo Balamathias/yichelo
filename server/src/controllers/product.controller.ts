@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Product, { IProduct } from '../models/product.model';
-import redisClient from '../config/redis';
+import redisClient from '../config/redis.config';
 import Category from '../models/category.model';
 
 export const addProduct = async (req: Request, res: Response) => {

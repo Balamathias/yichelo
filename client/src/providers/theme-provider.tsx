@@ -5,11 +5,19 @@ import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { type ThemeProviderProps } from "next-themes"
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider 
+
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => { setIsMounted(true) }, [isMounted])
+
+  if (!isMounted) return null
+
+  return( 
+  <NextThemesProvider 
     attribute="class"
     enableSystem={true}
-    defaultTheme="light"
+    defaultTheme="system"
     disableTransitionOnChange
     {...props}
-  >{children}</NextThemesProvider>
+  >{children}</NextThemesProvider>)
 }

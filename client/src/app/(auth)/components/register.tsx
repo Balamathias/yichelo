@@ -2,29 +2,43 @@
 
 import React from 'react';
 import { useActionState } from 'react';
-import { login } from '@/actions/auth.actions';
+import { register } from '@/actions/auth.actions';
 
 import { Input } from '@/components/ui/input'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
-import { BRAND_NAME } from '@/lib/utils';
 
-export default function Login() {
+export default function Register() {
 
-  const [state, loginAction, loading] = useActionState(login, undefined);
+  const [state, loginAction, loading] = useActionState(register, undefined);
 
   return (
     <div className="flex flex-col gap-y-4 w-full sm:max-w-[422px] py-8">
       <h2 className='text-3xl font-semibold py-2'>
-        Log In
+        Register
       </h2>
 
       <form  
         action={loginAction}
         className="flex flex-col gap-y-4"
       >
+        <Label htmlFor="username">Username</Label>
+        <Input
+          type="username"
+          id="username"
+          name='username'
+          placeholder='@yourusername'
+          className='border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none'
+        />
+        {
+          state?.errors?.fieldErrors?.username && 
+          <Label className='text-red-500/70'>
+            {state.errors?.fieldErrors?.username}
+          </Label>
+        }
+
         <Label htmlFor="email">Email</Label>
         <Input
           type="email"
@@ -55,20 +69,12 @@ export default function Login() {
           </Label>
         }
 
-        <div className='flex flex-row items-center gap-x-1.5'>
-          <Checkbox
-            name='remember-me' 
-            id='remember-me'
-          />
-          <Label htmlFor='remember-me'>Remember me</Label>
-        </div>
 
         <LoginButton loading={loading} />
 
         <div className='flex flex-row items-center gap-x-1.5'>
-          <Label htmlFor='remember-me'>You are new to {BRAND_NAME}? <Link href={'/register'} className={'underline text-primary font-semibold transition-all'}>Create an Account</Link>.</Label>
+          <Label htmlFor='remember-me'>Already have an account? <Link href={'/login'} className={'underline text-primary font-semibold transition-all'}>Please Log In</Link>.</Label>
         </div>
-
       </form>
     </div>
   );
@@ -82,7 +88,7 @@ const LoginButton = ({ loading }: { loading: boolean }) => {
       className="w-full rounded-full"
       size={'lg'}
     >
-      Login
+      Register
     </Button>
   );
 }

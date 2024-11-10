@@ -1,13 +1,14 @@
-import React, { PropsWithChildren } from 'react'
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import AppSidebar from "./components/app-sidebar"
 
-const Layout = ({ children }: PropsWithChildren) => {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className='w-full min-h-full relative'>
-      <div className='flex flex-col gap-y-5'>
-        { children }
-      </div>
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full h-full min-h-screen">
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   )
 }
-
-export default Layout
