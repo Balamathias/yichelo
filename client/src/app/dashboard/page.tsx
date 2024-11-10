@@ -1,18 +1,20 @@
 import { getUser } from '@/actions/auth.actions';
 import { ModeToggle } from '@/components/theme-toggle';
 import React from 'react'
+import QuickActions from './components/quick-actions';
 
 const Page = async () => {
   const user = await getUser();
   return (
-    <div className='mx-auto w-full max-w-7xl p-4 md:p-10'>
-      <h1 className='text-2xl font-bold'>Dashboard</h1>
-      <div className='flex flex-col gap-y-5'>
-        <div>
-          <h2 className='text-xl font-semibold'>Hi {user?.username}</h2>
-          <p className='text-muted-foreground'>This is your dashboard. You can manage your account, view your orders, and much more.</p>
-          <ModeToggle />
-        </div>
+    <div className='mx-auto w-full max-w-7xl p-4 md:p-10 md:px-12 flex flex-col gap-y-5'>
+      <div className='flex items-center justify-between w-full flex-1 py-3 rounded-lg bg-background px-3 dark:px-0 shadow'>
+        <h1 className='text-xl hidden md:block font-bold'>Dashboard</h1>
+        
+        <QuickActions />
+      </div>
+
+      <div>
+        <ModeToggle />
       </div>
     </div>
   )

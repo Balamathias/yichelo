@@ -17,6 +17,7 @@ import {
 
 import { BRAND_NAME } from "@/lib/utils"
 import Link from "next/link"
+import Image from "next/image"
 
 const items = [
     {
@@ -50,12 +51,19 @@ export default function AppSidebar() {
     return (
     <Sidebar>
         <SidebarHeader className="py-4 mb-3">
-            <Link href={'/'} className="text-2xl font-semibold text-brand-light">
-                {BRAND_NAME}
+            <Link href={'/'} className="text-xl font-semibold text-brand-light flex items-center flex-row gap-x-1.5">
+                <Image 
+                    src={'/meta/logo.png'}
+                    width={200}
+                    height={200}
+                    alt={BRAND_NAME}
+                    className="w-8 h-8"
+                />
+                <span>{BRAND_NAME}</span>
             </Link>
         </SidebarHeader>
 
-        <SidebarContent>
+        <SidebarContent className="mt-6">
             <SidebarGroup>
                 <SidebarGroupLabel className="text-xl font-semibold">Overview</SidebarGroupLabel>
                 <SidebarGroupContent className="mt-4">

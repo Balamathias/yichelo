@@ -5,7 +5,7 @@ import { useActionState } from 'react';
 import { login } from '@/actions/auth.actions';
 
 import { Input } from '@/components/ui/input'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
@@ -79,7 +79,7 @@ const LoginButton = ({ loading }: { loading: boolean }) => {
     <Button
       type="submit"
       disabled={loading}
-      className="w-full rounded-full"
+      className="w-full rounded-lg"
       size={'lg'}
     >
       Login

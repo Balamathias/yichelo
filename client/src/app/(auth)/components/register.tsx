@@ -5,14 +5,13 @@ import { useActionState } from 'react';
 import { register } from '@/actions/auth.actions';
 
 import { Input } from '@/components/ui/input'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 
 export default function Register() {
 
-  const [state, loginAction, loading] = useActionState(register, undefined);
+  const [state, registerAction, loading] = useActionState(register, undefined);
 
   return (
     <div className="flex flex-col gap-y-4 w-full sm:max-w-[422px] py-8">
@@ -21,7 +20,7 @@ export default function Register() {
       </h2>
 
       <form  
-        action={loginAction}
+        action={registerAction}
         className="flex flex-col gap-y-4"
       >
         <Label htmlFor="username">Username</Label>
@@ -85,7 +84,7 @@ const LoginButton = ({ loading }: { loading: boolean }) => {
     <Button
       type="submit"
       disabled={loading}
-      className="w-full rounded-full"
+      className="w-full rounded-lg"
       size={'lg'}
     >
       Register
