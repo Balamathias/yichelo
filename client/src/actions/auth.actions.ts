@@ -87,17 +87,6 @@ export const getUser = async (): Promise<User | null> => {
   }
 };
 
-
-// export const login = async (email: string, password: string) => {
-//   try {
-//     const res = await api.post('/auth/login', { email, password })
-//     return res.data
-//   } catch (error: any) {
-//     console.error('Login failed:', error)
-//     return error?.response?.data
-//   }
-// }
-
 export const logout = async () => {
   try {
     const res = await api.post('/auth/logout')

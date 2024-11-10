@@ -23,10 +23,11 @@ export default function Login() {
           type="email"
           id="email"
           name='email'
+          className='border-none border-b-2 border-muted-foreground p-4 rounded-none h-12'
         />
         {
           state?.errors?.fieldErrors?.email && 
-          <Label>
+          <Label className='text-rose-700/70'>
             {state.errors?.fieldErrors?.email}
           </Label>
         }
@@ -36,10 +37,11 @@ export default function Login() {
           type="password"
           id="password"
           name='password'
+          className='border-none border-b-2 border-muted-foreground p-4 rounded-none h-12'
         />
         {
           state?.errors?.fieldErrors?.password && 
-          <Label>
+          <Label className='text-rose-700/70'>
             {state.errors?.fieldErrors?.password}
           </Label>
         }
