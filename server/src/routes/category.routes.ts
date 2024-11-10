@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createCategory, getCategories, updateCategory, deleteCategory, getProductsGroupedByCategory } from '../controllers/category.controllers';
+import { createCategory, getCategories, updateCategory, deleteCategory, getProductsGroupedByCategory } from '../controllers/category.controller';
 import { verifyUser } from '../middlewares/auth.middleware';
 import { requireRole } from '../middlewares/role.middleware';
 

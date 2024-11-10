@@ -4,7 +4,10 @@ import User from '../models/user.model';
 import { JWT_SECRET } from '../config';
 
 export const verifyAdmin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const token = req.cookies.accessToken;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader?.startsWith('Bearer ') 
+    ? authHeader.split(' ')[1]
+    : req.cookies.accessToken;
 
   if (!token) return res.status(401).json({ message: 'Access token missing or invalid' });
 
@@ -26,18 +29,22 @@ export const verifyAdmin = async (req: Request, res: Response, next: NextFunctio
 };
 
 export const verifyUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const token = req.cookies.accessToken;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader?.startsWith('Bearer ') 
+    ? authHeader.split(' ')[1]
+    : req.cookies.accessToken;
 
-  if (!token) return res.status(401).json({ message: 'Access token missing or invalid' });
+  if (!token) {
+    return res.status(401).json({ message: 'Access token missing or invalid' });
+  }
 
   try {
     const decoded: any = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(decoded?.userId);
+    const user = await User.findById(decoded?.userId).select('-password');
 
     if (!user) return res.status(403).json({ message: 'Forbidden: Requires User Access' });
 
     req.user = user;
-    
     next();
   } catch (error) {
     console.error(error);

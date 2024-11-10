@@ -6,6 +6,8 @@ export interface IUser extends Document {
   email: string;
   password: string;
   roles: ('customer' | 'seller' | 'admin') [];
+  firstName?: string;
+  lastName?: string;
   comparePassword(password: string): Promise<boolean>;
   viewedProducts: mongoose.Types.ObjectId[];
   purchasedProducts: mongoose.Types.ObjectId[];
@@ -17,11 +19,13 @@ export interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  username: { type: String, required: false, unique: true },
   phone: { type: String, required: false },
   roles: { type: [String], default: ['customer'] },
+  firstName: { type: String, required: false },
+  lastName: { type: String, required: false },
   verified: { type: Boolean, default: false },
   token: { type: String },
   resetPasswordToken: { type: String },

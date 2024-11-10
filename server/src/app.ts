@@ -6,8 +6,16 @@ import productRoutes from './routes/product.routes';
 import cartRoutes from './routes/cart.routes'
 import categoryRoutes from './routes/category.routes';
 import recommendationRoutes from './routes/recommendation.routes';
+import cors from 'cors';
 
 const app = express();
+
+
+app.use(cors({
+  origin: [process.env.FRONTEND_URL!, 'http://localhost:3000',],
+  credentials: true
+}));
+
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
