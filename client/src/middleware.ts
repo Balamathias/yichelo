@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
 
   if (!user && currentPath.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/login?next=' + currentPath, request.url));
   }
 
   if (user && (currentPath.startsWith('/login') || currentPath.startsWith('/register'))) {

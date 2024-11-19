@@ -13,6 +13,16 @@ export interface Product {
   updatedAt: string;
 }
 
+export interface PaginatedProducts {
+  products: Product[];
+  pagination: {
+    totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+    totalPages: number;
+  },
+}
+
 export interface InsertProduct {
   name: string;
   description: string;

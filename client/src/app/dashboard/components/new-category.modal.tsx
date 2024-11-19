@@ -16,7 +16,7 @@ const NewCategory = () => {
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size={'icon'} variant={'ghost'}>
+              <Button size={'icon'} variant={'ghost'} className='rounded-full flex items-center justify-center bg-secondary/25'>
                 <LucideListPlus size={28} className='w-8 h-8' />
               </Button>
             </TooltipTrigger>

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useActionState } from 'react';
 import { login } from '@/actions/auth.actions';
+import Form from 'next/form'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -21,7 +22,7 @@ export default function Login() {
         Log In
       </h2>
 
-      <form  
+      <Form  
         action={loginAction}
         className="flex flex-col gap-y-4"
       >
@@ -69,7 +70,7 @@ export default function Login() {
           <Label htmlFor='remember-me'>You are new to {BRAND_NAME}? <Link href={'/register'} className={'underline text-primary font-semibold transition-all'}>Create an Account</Link>.</Label>
         </div>
 
-      </form>
+      </Form>
     </div>
   );
 }

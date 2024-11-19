@@ -3,6 +3,7 @@
 import React from 'react';
 import { useActionState } from 'react';
 import { register } from '@/actions/auth.actions';
+import Form from 'next/form'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -19,7 +20,7 @@ export default function Register() {
         Register
       </h2>
 
-      <form  
+      <Form  
         action={registerAction}
         className="flex flex-col gap-y-4"
       >
@@ -74,7 +75,7 @@ export default function Register() {
         <div className='flex flex-row items-center gap-x-1.5'>
           <Label htmlFor='remember-me'>Already have an account? <Link href={'/login'} className={'underline text-primary font-semibold transition-all'}>Please Log In</Link>.</Label>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }
