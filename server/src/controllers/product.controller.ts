@@ -4,7 +4,7 @@ import redisClient from '../config/redis.config';
 import Category from '../models/category.model';
 
 export const addProduct = async (req: Request, res: Response) => {
-  const { name, description, price, category: categoryName, images, features, stock } = req.body;
+  const { name, description, price, category: categoryName, images, features, stock, badge, tags } = req.body;
   try {
     const category = await Category.findOne({ name: categoryName });
 
@@ -12,7 +12,7 @@ export const addProduct = async (req: Request, res: Response) => {
       return res.status(400).json({ message: `Category ${categoryName} not found` });
     }
 
-    const newProduct: IProduct = new Product({ name, description, price, category: category?._id, images, features, stock });
+    const newProduct: IProduct = new Product({ name, description, price, category: category?._id, images, features, stock, badge, tags });
     await newProduct.save();
 
     res.status(201).json({ message: 'Product added successfully', product: newProduct });
@@ -71,7 +71,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
     const totalItems = await Product.countDocuments(query);
 
-    await redisClient.setex(cacheKey, 600, JSON.stringify({
+    await redisClient.setex(cacheKey, 100, JSON.stringify({
       products,
       pagination: {
         totalItems,
@@ -110,13 +110,13 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { name, description, price, category: categoryName, images, features, stock } = req.body;
+  const { name, description, price, category: categoryName, images, features, stock, ...rest } = req.body;
 
   try {
     const category = await Category.findOne({ name: categoryName });
     if (!category) return res.status(400).json({ message: `Category ${categoryName} not found` });
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, { name, description, price, category: category?._id, images, features, stock }, { new: true });
+    const updatedProduct = await Product.findByIdAndUpdate(id, { name, description, price, category: category?._id, images, features, stock, ...rest }, { new: true });
     if (!updatedProduct) return res.status(404).json({ message: 'Product not found' });
 
     res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });

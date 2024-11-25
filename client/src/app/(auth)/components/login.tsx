@@ -11,10 +11,12 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { BRAND_NAME } from '@/lib/utils';
+import { useSearchParams } from 'next/navigation';
 
 export default function Login() {
 
   const [state, loginAction, loading] = useActionState(login, undefined);
+  const next = useSearchParams().get('next');
 
   return (
     <div className="flex flex-col gap-y-4 w-full sm:max-w-[422px] py-8">
@@ -63,6 +65,8 @@ export default function Login() {
           />
           <Label htmlFor='remember-me'>Remember me</Label>
         </div>
+
+        <input type='hidden' name='next' value={next as string} />
 
         <LoginButton loading={loading} />
 

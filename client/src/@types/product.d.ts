@@ -1,4 +1,5 @@
 export interface Product {
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -8,6 +9,7 @@ export interface Product {
   category: string;
   tags?: string[];
   rating?: number;
+  discount?: number;
   badge?: string;
   createdAt: string;
   updatedAt: string;
@@ -37,6 +39,7 @@ export interface InsertProduct {
 }
 
 export interface ProductCategory {
+  _id: string;
   name: string;
   description?: string;
   thumbnail?: string;

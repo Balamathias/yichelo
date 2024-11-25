@@ -10,6 +10,8 @@ import { extractRouterConfig } from "uploadthing/server";
 import { fileRouter } from "./api/uploadthing/core";
 import { connection } from "next/server"; 
 import { Suspense } from "react"; 
+import QueryProvider from "@/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--flow-circular",
@@ -39,12 +41,15 @@ export default function RootLayout({
         className={cn(`antialiased`, inter.className)}
         suppressHydrationWarning
       >
-        <Suspense>
-          <ThemeProvider>
-              {children}
-          </ThemeProvider>
-          <UTSSR />
-        </Suspense>
+        <QueryProvider>
+          <Suspense>
+            <ThemeProvider>
+                {children}
+            </ThemeProvider>
+            <UTSSR />
+            <Toaster />
+          </Suspense>
+        </QueryProvider>
       </body>
     </html>
   );

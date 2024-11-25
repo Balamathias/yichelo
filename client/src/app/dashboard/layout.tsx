@@ -3,7 +3,7 @@ import AppSidebar from "./components/app-sidebar"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <main className="w-full h-full min-h-screen bg-gray-100 dark:bg-background">
         <SidebarTrigger />

@@ -6,3 +6,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const BRAND_NAME = "Yichelo"
+
+export const formatNigerianCurrency = (amount: number) => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  }).format(amount)
+}
+
+export const formatCurrency = (amount: number, currency: string) => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency,
+  }).format(amount)
+}

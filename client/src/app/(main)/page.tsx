@@ -1,8 +1,7 @@
-import { getUser } from '@/actions/auth.actions';
-import { Button } from '@/components/ui/button'
 import { BRAND_NAME } from '@/lib/utils';
 import { Metadata } from 'next';
-import Link from 'next/link';
+import Products from './components/products';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: `Home ~ Discover gadgets | ${BRAND_NAME}`,
@@ -11,14 +10,12 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   
-  const user = await getUser()
   return (
-    <div className="flex flex-col container mx-auto gap-y-5 p-4 py-6">
+    <div className="flex flex-col max-w-7xl mx-auto gap-y-5 py-6 p-4">
       <div>
-        <h2 className="text-2xl font-bold">{user?.email}</h2>
-        <Button asChild size={'lg'} className='rounded-lg'>
-          <Link href="/dashboard">Dashboard</Link>
-        </Button>
+        <Suspense fallback={'Loading Products ...'}>
+          <Products />
+        </Suspense>
       </div>
     </div>
   );

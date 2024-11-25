@@ -24,10 +24,12 @@ const registerSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
 });
 
-export async function login(initialState: any, data: FormData) {
+export async function login(_initialState: any, data: FormData) {
   const email = data.get('email') as string;
   const password = data.get('password') as string;
   const rememberMe = data.get('remember-me')
+
+  const next = data.get('next') as string
 
   const cookie = await cookies()
 
@@ -49,7 +51,11 @@ export async function login(initialState: any, data: FormData) {
       cookie.set('accessToken', data?.data?.accessToken as string)
       cookie.set('refreshToken', data?.data?.refreshToken as string)
 
-      redirectUrl = '/'
+      if (next) {
+        redirectUrl = next
+      } else {
+        redirectUrl = '/'
+      }
     }
   } catch (error: any) {
     console.error('Login failed:', error);
@@ -69,7 +75,7 @@ export async function login(initialState: any, data: FormData) {
   }
 }
 
-export async function register(initialState: any, data: FormData) {
+export async function register(_initialState: any, data: FormData) {
   const email = data.get('email') as string;
   const password = data.get('password') as string;
   const username = data.get('username') as string
@@ -120,7 +126,7 @@ export const getUser = async (): Promise<User | null> => {
     const accessToken = (await cookies()).get('accessToken')?.value;
 
     if (!accessToken) {
-      console.error('No access token found, unauthorized.');
+      console.warn('No access token found, unauthorized.');
       return null;
     }
 
