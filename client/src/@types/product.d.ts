@@ -44,3 +44,10 @@ export interface ProductCategory {
   description?: string;
   thumbnail?: string;
 }
+
+export interface InsertCategory {
+  _id: string;
+  name: string;
+  description?: string;
+  thumbnail?: string;
+}

@@ -8,8 +8,19 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 import { LucideListPlus, } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { useRouter } from 'next/navigation'
 
 const NewCategory = () => {
+  const router = useRouter()
+
+  const [categoryName, setCategoryName] = React.useState('')
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    router.push('/dashboard/products/categories/new?starter=' + categoryName)
+  }
+
   return (
     <DynamicModal
       trigger={
@@ -27,10 +38,12 @@ const NewCategory = () => {
         </div>
       }
     >
-      <form className="flex flex-col gap-y-4">
+      <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
         <Input
           placeholder={'Enter product name'}
           className='focus-visible:ring-0 h-12 border-muted rounded-lg'
+          value={categoryName}
+          onChange={(e) => setCategoryName(e.target.value)}
         />
         
         <div className='w-full justify-end flex'>

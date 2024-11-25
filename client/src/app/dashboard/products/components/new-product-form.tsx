@@ -111,7 +111,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             Select Product Category
           </Label>
           <Select name="category">
-            <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none">
+            <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary">
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
@@ -174,7 +174,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             id="name"
             name="name"
             placeholder="Enter product name"
-            className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none"
+            className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
             defaultValue={starter || ''}
           />
         </div>
@@ -200,7 +200,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             id="price"
             name="price"
             placeholder="Enter product price"
-            className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none"
+            className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
             defaultValue="0.00"
           />
         </div>
@@ -214,7 +214,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             id="stock"
             name="stock"
             placeholder="Enter Stock Quantity"
-            className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none"
+            className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
             defaultValue="1"
           />
         </div>
@@ -231,7 +231,7 @@ const NewProductForm = ({ getCategories }: Props) => {
                 value={feature}
                 onChange={(e) => handleFeatureChange(index, e.target.value)}
                 placeholder={`Feature ${index + 1}`}
-                className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none"
+                className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
               />
               <Button type="button" size={'icon'} variant={'ghost'} onClick={() => handleRemoveFeature(index)}>
                 <LucideTrash size={24} />
@@ -245,7 +245,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             Product badge
           </Label>
           <Select name="badge">
-            <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none">
+            <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary">
               <SelectValue placeholder="Select Badge" />
             </SelectTrigger>
             <SelectContent>
@@ -273,7 +273,7 @@ const NewProductForm = ({ getCategories }: Props) => {
                 value={tag}
                 onChange={(e) => handleTagChange(index, e.target.value)}
                 placeholder={`Tag ${index + 1}`}
-                className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none"
+                className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
               />
               <Button type="button" size={'icon'} variant={'secondary'} onClick={() => handleRemoveTag(index)} className='absolute top-2 rounded-full transition-opacity opacity-0 group-hover:opacity-100 z-10 bg-rose-500/20'>
                 <LucideTrash size={24} className='text-red-600'/>
@@ -283,11 +283,11 @@ const NewProductForm = ({ getCategories }: Props) => {
         </div>
 
         <div className="w-full flex justify-between">
-          <Button size="lg" variant={'destructive'} type='button' asChild>
+          <Button size="lg" variant={'destructive'} className="rounded-xl" type='button' asChild disabled={loading}>
             <Link href='/dashboard'>Cancel</Link>
           </Button>
 
-          <Button size="lg">
+          <Button size="lg" disabled={loading} className='rounded-xl'>
             { loading && <LucideLoader size={24} className='mr-2 animate-spin' /> }
             {loading ? 'Creating...' : 'Create Product'}
           </Button>

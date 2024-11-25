@@ -1,8 +1,8 @@
 import { Product as TProduct } from '@/@types/product'
 import { Badge } from '@/components/ui/badge'
-import { Card } from '@/components/ui/card'
 import { cn, formatCurrency } from '@/lib/utils'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 interface ProductProps {
@@ -11,7 +11,7 @@ interface ProductProps {
 
 const Product = ({ product }: ProductProps) => {
   return (
-    <Card className='rounded-lg flex flex-col gap-y-3 p-4 shadow-none border-none hover:opacity-70 transition-opacity hover:transition-opacity cursor-pointer relative'>
+    <Link href={`/products/${product._id}`} className='rounded-lg flex flex-col gap-y-3 p-4 shadow-none border-none hover:opacity-70 transition-opacity hover:transition-opacity cursor-pointer relative'>
       <Image src={product.images?.[0]} alt={product.name} width={200} height={200} className='object-contain w-full h-48 rounded-3xl py-2.5 bg-gray-300 dark:bg-secondary' />
 
       {
@@ -35,7 +35,7 @@ const Product = ({ product }: ProductProps) => {
           <p className='font-normal text-sm text-muted-foreground'><b className="font-bold">{product.stock}</b> items in stock.</p>
         </div>
       </div>
-    </Card>
+    </Link>
   )
 }
 
