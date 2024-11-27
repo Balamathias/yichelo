@@ -1,6 +1,7 @@
 import { getProduct } from '@/actions/product.actions'
 import React from 'react'
 import ProductImages from './product.images'
+import ProductInfo from './product.info'
 
 interface Props {
   productId: string
@@ -12,6 +13,7 @@ const ProductDetail = async ({ productId }: Props) => {
   return (
     <div className='flex flex-col md:flex-row gap-8'>
       <ProductImages images={product.images} />
+      <ProductInfo product={product} />
     </div>
   )
 }
