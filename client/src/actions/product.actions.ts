@@ -18,14 +18,22 @@ export const createProduct = async (initial: any, data: InsertProduct) => {
   return product.data
 }
 
+export const updateProduct = async (initial: any, data: InsertProduct) => {
+  const product = await api.put<Product>('/products', data)
+  return product.data
+}
+
 export const getCategories = async () => {
   const categories = await api.get<ProductCategory[]>('/categories')
-
   return categories.data
 }
 
 export const createCategory = async (initial: any, data: InsertCategory) => {
   const category = await api.post<ProductCategory>('/categories', data)
+  return category.data
+}
 
+export const updateCategory = async (initial: any, data: InsertCategory) => {
+  const category = await api.put<ProductCategory>('/categories', data)
   return category.data
 }
