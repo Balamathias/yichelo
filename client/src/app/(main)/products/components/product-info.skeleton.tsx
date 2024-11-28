@@ -2,8 +2,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 const ProductInfoSkeleton = () => {
   return (
-    <div className='flex flex-1 flex-col gap-y-3 px-4 max-md:py-4 w-full'>
-      <div className='flex flex-col gap-y-2'>
+    <div className='flex flex-1 flex-col gap-y-3 px-4 max-md:py-4 w-full md:min-w-[500px]'>
+      <div className='flex flex-col gap-y-2 w-full'>
         <Skeleton className='h-8 w-3/4' /> {/* Placeholder for product name */}
         <Skeleton className='h-6 w-1/2' /> {/* Placeholder for product price */}
       </div>
