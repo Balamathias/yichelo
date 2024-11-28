@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
+import { LucideLoader } from 'lucide-react';
 
 export default function Register() {
 
@@ -88,7 +89,10 @@ const LoginButton = ({ loading }: { loading: boolean }) => {
       className="w-full rounded-lg"
       size={'lg'}
     >
-      Register
+      {
+        loading && <LucideLoader className='animate-spin' />
+      }
+      { loading ? 'Registering...' : 'Register' }
     </Button>
   );
 }

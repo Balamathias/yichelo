@@ -7,6 +7,8 @@ import CartItem from './cart-item'
 import { formatNigerianCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/lib/store/cart'
+import { LucideShoppingBasket } from 'lucide-react'
+import Link from 'next/link'
 
 interface Props {
   user: User | null,
@@ -19,6 +21,15 @@ const CartItems = ({ cart, user }: Props) => {
   const items = user?._id ? cart?.products : localCarts
 
   const totalPrice = user?._id ? cart?.totalPrice || 0 : localCarts.reduce((acc, item) => acc + item.product.price * item.quantity, 0) || 0
+
+  if (items?.length === 0) {
+    return (
+      <div className='flex flex-col items-center justify-center h-96'>
+        <LucideShoppingBasket size={100} />
+        <h2 className='text-2xl text-muted-foreground font-semibold'>Your cart is empty, <Link href={'/'} className='opacity-80 hover:opacity-90'>Start Shopping</Link>.</h2>
+      </div>
+    )
+  }
 
   return (
     <div className='flex flex-col gap-4 md:flex-row w-full'>

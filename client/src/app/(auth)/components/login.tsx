@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { BRAND_NAME } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
+import { LucideLoader } from 'lucide-react';
 
 export default function Login() {
 
@@ -87,7 +88,12 @@ const LoginButton = ({ loading }: { loading: boolean }) => {
       className="w-full rounded-lg"
       size={'lg'}
     >
-      Login
+      {
+        loading && <LucideLoader className='animate-spin' />
+      }
+      {
+        loading ? 'Processing...' : 'Login'
+      }
     </Button>
   );
 }
