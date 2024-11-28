@@ -4,7 +4,12 @@ import { Cart } from "@/@types/cart";
 import api from "@/lib/axios.server";
 
 export const getCart = async () => {
-  return (await api.get<Cart>("/cart")).data;
+  try {
+    return (await api.get<Cart>("/cart")).data;
+  } catch (error) {
+    console.warn("Get cart failed:", error);
+    return null;
+  }
 };
 
 export const addToCart = async (productId: string, quantity=1) => {

@@ -1,23 +1,25 @@
 'use client'
 
-import React from "react"
-import { Product } from "@/@types/product"
-import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/lib/store/cart"
+import { Product } from '@/@types/product'
+import { Button } from '@/components/ui/button'
 import { useAddToCart, useCart, useRemoveFromCart } from '@/lib/react-query/cart.query'
-
-import { LucidePlus, LucideMinus } from 'lucide-react'
-import { useAuth } from "@/lib/react-query/user.query"
+import { useAuth } from '@/lib/react-query/user.query'
+import { useCartStore } from '@/lib/store/cart'
+import { formatNigerianCurrency } from '@/lib/utils'
+import { LucideLoader, LucideMinus, LucidePlus } from 'lucide-react'
+import Image from 'next/image'
+import React from 'react'
 
 interface Props {
-  product: Product
+  product: Product,
+  quantity: number
 }
 
-const ProductActions = ({ product }: Props) => {
-  
-  const { mutate: addToCart, isPending: addingToCart } = useAddToCart()
-  const { mutate: removeFromCart, isPending: removingFromCart } = useRemoveFromCart()
-  const { data: cart } = useCart()
+const CartItem = ({ product, quantity: _qty }: Props) => {
+
+  const { mutate: addToCart } = useAddToCart()
+  const { mutate: removeFromCart } = useRemoveFromCart()
+  const { data: cart, isPending: gettingCart } = useCart()
 
   const { user } = useAuth()
   
@@ -28,25 +30,6 @@ const ProductActions = ({ product }: Props) => {
 
   const cartItem = user?._id ? cart?.products?.find((item) => item.product._id === product._id) : localItems.find((item) => item.product._id === product._id)
   const [quantity, setQuantity] = React.useState(cartItem?.quantity || 0)
-
-  const handleAddToCart = () => {
-    if (quantity === 0) {
-      const newQuantity = 1
-      setQuantity(newQuantity)
-      if (user?._id) {
-        addToCart({ productId: product?._id, quantity: newQuantity })
-      } else {
-        localAddToCart({ product, quantity: newQuantity })
-      }
-    } else {
-      setQuantity(0)
-      if (user?._id) {
-        removeFromCart(product?._id)
-      } else {
-        localRemoveFromCart({ product, quantity }, user?._id)
-      }
-    }
-  }
 
   const incrementQuantity = () => {
     const newQuantity = quantity + 1
@@ -78,14 +61,20 @@ const ProductActions = ({ product }: Props) => {
       }
     }
   };
-  
-  
 
   return (
-    <div className="flex flex-col gap-y-3 py-4">
-      <div className="flex items-center justify-between gap-x-4">
-        <h2 className="text-base font-semibold text-primary">Quantity</h2>
+    <div className='flex flex-col sm:flex-row gap-4 p-2.5'>
+      <Image
+        src={product.images?.[0]}
+        alt={product.name}
+        width={500}
+        height={500}
+        className='aspect-square h-32 w-32 object-contain bg-gray-300 dark:bg-secondary rounded-xl'
+      />
 
+      <div className='flex flex-col gap-2'>
+        <h3 className='text-xl font-semibold'>{product.name}</h3>
+        <p className='text-sm text-muted-foreground'>{formatNigerianCurrency(product.price)}</p>
         <div className="flex gap-2 items-center">
           <Button
             size="icon"
@@ -95,7 +84,13 @@ const ProductActions = ({ product }: Props) => {
           >
             <LucidePlus size={24} />
           </Button>
-          <span className="font-semibold text-lg">{quantity}</span>
+          {
+            gettingCart ? (
+              <LucideLoader className='animate-spin' />
+            ): (
+              <span className="font-semibold text-lg">{quantity}</span>
+            )
+          }
           <Button
             size="icon"
             variant="secondary"
@@ -107,24 +102,8 @@ const ProductActions = ({ product }: Props) => {
           </Button>
         </div>
       </div>
-
-      <Button
-        size="lg"
-        onClick={handleAddToCart}
-        className="rounded-xl"
-      >
-        {quantity > 0 ? "Remove from Cart" : "Add to Cart"}
-      </Button>
-
-      <Button
-        size="lg"
-        variant="default"
-        className="rounded-xl bg-brand text-white hover:bg-brand transition-opacity hover:opacity-70"
-      >
-        Buy Now
-      </Button>
     </div>
   )
 }
 
-export default ProductActions
+export default CartItem

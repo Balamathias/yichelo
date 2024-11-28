@@ -15,15 +15,15 @@ export const addOrUpdateCartItem = async (req: Request, res: Response) => {
       cart = new Cart({ user: userId, products: [], totalPrice: 0 });
     }
 
-    const existingProductIndex = cart.products.findIndex(p => p.productId.toString() === productId);
+    const existingProductIndex = cart.products.findIndex(p => p.product.toString() === productId);
     if (existingProductIndex > -1) {
       cart.products[existingProductIndex].quantity += quantity;
     } else {
-      cart.products.push({ productId, quantity });
+      cart.products.push({ product: productId, quantity });
     }
 
     cart.totalPrice = cart.products.reduce((total, item) => {
-      const productPrice = item.productId.toString() === productId ? product.price : 0;
+      const productPrice = item.product.toString() === productId ? product.price : 0;
       return total + productPrice * item.quantity;
     }, 0);
 
@@ -38,7 +38,8 @@ export const getCart = async (req: Request, res: Response) => {
   const userId = req.user?._id;
 
   try {
-    const cart = await Cart.findOne({ user: userId }).populate('products.productId');
+    const cart = await Cart.findOne({ user: userId }).populate('products.product');
+    console.log(cart)
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
 
     res.status(200).json(cart);
@@ -52,20 +53,42 @@ export const removeCartItem = async (req: Request, res: Response) => {
   const { productId } = req.params;
 
   try {
-    const cart = await Cart.findOne({ user: userId }).populate('products.productId');
+    const cart = await Cart.findOne({ user: userId });
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
 
-    cart.products = cart.products.filter(item => item.productId.toString() !== productId);
+    const productExists = cart.products.some(
+      (item) => item.product.toString() === productId
+    );
+    if (!productExists) {
+      return res.status(404).json({ message: 'Product not found in cart' });
+    }
+
+    cart.products = cart.products.filter(
+      (item) => item.product.toString() !== productId
+    );
+
+    const updatedProducts = await Product.find({
+      _id: { $in: cart.products.map((item) => item.product) },
+    });
+
     cart.totalPrice = cart.products.reduce((total, item) => {
-      return total + item.quantity * (item.productId as unknown as IProduct).price;
+      const product = updatedProducts.find(
+        (prod) => (prod._id as any).toString() === item.product.toString()
+      );
+      return total + item.quantity * (product?.price || 0);
     }, 0);
 
     await cart.save();
-    res.status(200).json(cart);
+
+    res.status(200).json({
+      message: 'Item removed from cart successfully',
+      cart,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Failed to remove item from cart', error });
   }
 };
+
 
 export const syncCart = async (req: Request, res: Response) => {
   const userId = req.user?._id;
@@ -78,18 +101,18 @@ export const syncCart = async (req: Request, res: Response) => {
     }
 
     products.forEach(({ productId, quantity }: { productId: string, quantity: number }) => {
-      const existingProductIndex = cart.products.findIndex(p => p.productId.toString() === productId);
+      const existingProductIndex = cart.products.findIndex(p => p.product.toString() === productId);
 
       if (existingProductIndex > -1) {
         cart.products[existingProductIndex].quantity += quantity;
       } else {
-        cart.products.push({ productId: productId as any, quantity });
+        cart.products.push({ product: productId as any, quantity });
       }
     });
 
-    const productDetails = await Product.find({ _id: { $in: cart.products.map(p => p.productId) } });
+    const productDetails = await Product.find({ _id: { $in: cart.products.map(p => p.product) } });
     cart.totalPrice = cart.products.reduce((total, item) => {
-      const product = productDetails.find(p => (p as unknown as IProduct)?._id?.toString() === item.productId.toString());
+      const product = productDetails.find(p => (p as unknown as IProduct)?._id?.toString() === item.product.toString());
       return product ? total + product.price * item.quantity : total;
     }, 0);
 

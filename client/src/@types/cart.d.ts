@@ -1,3 +1,5 @@
+import { Product } from "./product"
+
 export interface Cart {
   _id: string
   user: string
@@ -6,6 +8,6 @@ export interface Cart {
 }
 
 export interface CartItem {
-  product: string
+  product: Product
   quantity: number
 }

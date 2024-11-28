@@ -49,10 +49,6 @@ export const useCartStore = create<CartStore>((set) => ({
   
       saveCartToLocalStorage(updatedItems);
   
-      if (userId) {
-        syncCartWithServer(updatedItems, userId);
-      }
-  
       return { items: updatedItems };
     });
   },  
@@ -60,12 +56,6 @@ export const useCartStore = create<CartStore>((set) => ({
     set((state) => {
       const updatedItems = state.items.filter((i) => i.product._id !== item.product._id);
       saveCartToLocalStorage(updatedItems);
-
-      if (userId) {
-        // syncCartWithServer(updatedItems, userId);
-        removeFromCart(item.product._id);
-      }
-
 
       return { items: updatedItems };
     });
@@ -76,10 +66,6 @@ export const useCartStore = create<CartStore>((set) => ({
         item.product._id === productId ? { ...item, quantity } : item
       );
       saveCartToLocalStorage(updatedItems);
-
-      if (userId) {
-        syncCartWithServer(updatedItems, userId);
-      }
 
       return { items: updatedItems };
     });

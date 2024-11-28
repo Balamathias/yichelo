@@ -2,11 +2,13 @@
 
 import { User } from '@/@types/user'
 import { ModeToggle } from '@/components/theme-toggle'
-import { Button } from '@/components/ui/button'
-import { BRAND_NAME } from '@/lib/utils'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { useCart } from '@/lib/react-query/cart.query'
+import { useCartStore } from '@/lib/store/cart'
+import { BRAND_NAME, cn } from '@/lib/utils'
 import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface Props {
   user: User | null
@@ -14,6 +16,18 @@ interface Props {
 
 const Navbar = ({ user }: Props) => {
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/'
+  const cartItems = useCartStore(state => state.items)
+  const {data: cart} = useCart()
+
+  const items = user?._id ? cart?.products : cartItems
+  const totalItems = items?.reduce((acc, item) => acc + item.quantity, 0) || 0
+
+  useEffect(() => {
+    if (currentPath === '/cart') {
+      document.title = `(${totalItems}) Cart`
+    }
+  }, [totalItems])
+
   return (
     <nav className='w-full h-20 fixed top-0 flex items-center justify-center z-20 bg-background/80 backdrop-blur-sm'>
       <div className='max-w-7xl px-4 md:px-10 flex items-center justify-between w-full'>
@@ -34,9 +48,16 @@ const Navbar = ({ user }: Props) => {
         <div className='flex flex-row justify-between items-center gap-4'>
           <ModeToggle />
 
-          <Button variant={'ghost'} size={'icon'} className='rounded-xl'>
-            <ShoppingCart size={24} />
-          </Button>
+          <span role='button' className={cn('rounded-xl relative hover:bg-secondary transition-opacity p-2')}>
+            <Link href='/cart'>
+              <ShoppingCart size={20} />
+              {
+                totalItems > 0 && (
+                  <span className='absolute -top-2 -right-2 bg-primary text-white dark:text-black text-xs font-semibold rounded-full h-5 w-5 flex items-center justify-center aspect-square mt-0.5'>{totalItems}</span>
+                )
+              }
+            </Link>
+          </span>
 
           {
             !user ? (

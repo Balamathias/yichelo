@@ -56,9 +56,9 @@ export const updateCategory = async (initial: any, data: InsertCategory) => {
   return category.data
 }
 
-export const getGroupedProducts = async () => {
+export const getGroupedProducts = async (limit=3) => {
   try {
-    const groupedProducts = await api.get<GroupedProduct[]>('/categories/grouped')
+    const groupedProducts = await api.get<GroupedProduct[]>('/categories/grouped', { params: { limit } })
     return groupedProducts.data
   } catch (error) {
     console.error('Get grouped products failed:', error)

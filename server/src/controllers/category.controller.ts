@@ -57,6 +57,7 @@ export const getCategory = async (req: Request, res: Response) => {
 };
 
 export const getProductsGroupedByCategory = async (req: Request, res: Response) => {
+  const { limit } = req.query;
   try {
     const groupedProducts = await Product.aggregate([
       {
@@ -91,7 +92,7 @@ export const getProductsGroupedByCategory = async (req: Request, res: Response) 
           description: 1,
         },
       },
-    ]);
+    ]).limit(limit ? parseInt(limit as string) : 3);
 
     res.status(200).json(groupedProducts);
   } catch (error) {
