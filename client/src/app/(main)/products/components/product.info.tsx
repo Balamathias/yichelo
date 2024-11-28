@@ -34,12 +34,12 @@ const ProductInfo = ({ product }: Props) => {
       <div className='flex flex-col gap-y-2 py-4'>
         <div className='flex flex-col gap-y-1'>
           <h3 className='font-semibold text-lg'>Description</h3>
-          <p className={`text-muted-foreground ${isExpanded ? '' : 'line-clamp-2'}`}>
-            {product.description}
+          <p className={`text-muted-foreground`}>
+            <span className={`${isExpanded ? '' : 'line-clamp-2'}`}>{product.description} {' '}</span>
+            <span onClick={toggleDescription} className="text-brand dark:text-brand-light cursor-pointer hover:opacity-80 transition-opacity">
+              {isExpanded ? 'See Less' : 'See More'}
+            </span>
           </p>
-          <button onClick={toggleDescription} className="text-blue-500">
-            {isExpanded ? 'See Less' : 'See More'}
-          </button>
         </div>
 
         <div className='flex flex-col gap-y-1'>
