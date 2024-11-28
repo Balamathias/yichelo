@@ -202,3 +202,15 @@ export const getSimilarProducts = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error fetching similar products', error });
   }
 };
+
+export const getProductsByCategory = async (req: Request, res: Response) => {
+  const { category } = req.params;
+
+  try {
+    const products = await Product.find({ category }).populate('category');
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error fetching products', error });
+  }
+}

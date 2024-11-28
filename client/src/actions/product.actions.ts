@@ -16,6 +16,10 @@ export const getSimilarProducts = async (id: string) => {
   return (await api.get<Product[]>(`/products/similar/${id}`)).data
 }
 
+export const getProductsByCategory = async (category: string) => {
+  return (await api.get<Product[]>(`/products/category/${category}`)).data
+}
+
 export const createProduct = async (initial: any, data: InsertProduct) => {
   const product = await api.post<Product>('/products', data)
 

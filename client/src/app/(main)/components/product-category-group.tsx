@@ -2,6 +2,7 @@ import { GroupedProduct } from '@/@types/product'
 import { Button } from '@/components/ui/button'
 import { Sparkles } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 interface ProductCategoryGroupProps {
@@ -32,9 +33,12 @@ const ProductCategoryGroup = ({ group }: ProductCategoryGroupProps) => {
         </div>
         <Button
           className='rounded-full bg-white text-black hover:bg-white hover:text-black hover:opacity-70 transition-opacity'
+          asChild
         >
-          Explore
-          <Sparkles />
+          <Link href={`/products/category/${group.categoryName}_${group._id}`}>
+            Explore
+            <Sparkles />
+          </Link>
         </Button>
       </div>
     </div>
