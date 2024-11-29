@@ -9,6 +9,7 @@ import { BRAND_NAME, cn } from '@/lib/utils'
 import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
+import SearchBar from './search-bar'
 
 interface Props {
   user: User | null
@@ -29,12 +30,12 @@ const Navbar = ({ user }: Props) => {
   }, [totalItems])
 
   return (
-    <nav className='w-full h-20 fixed top-0 flex items-center justify-center z-20 bg-background/80 backdrop-blur-sm'>
+    <nav className='w-full h-16 md:h-20 fixed top-0 flex items-center justify-center z-20 bg-background/80 backdrop-blur-sm'>
       <div className='max-w-7xl px-4 md:px-10 flex items-center justify-between w-full'>
         <div className='flex items-center gap-4'>
           <Link href={'/'} className='text-2xl font-bold'>{BRAND_NAME}</Link>
 
-          <ul className='flex flex-row gap-4 items-center'>
+          <ul className='flex-row gap-4 items-center hidden md:flex'>
             <li>
               <Link href='/explore'>Explore</Link>
             </li>
@@ -43,6 +44,10 @@ const Navbar = ({ user }: Props) => {
               <Link href='/products'>Products</Link>
             </li>
           </ul>
+        </div>
+
+        <div className='hidden md:flex'>
+          <SearchBar />
         </div>
 
         <div className='flex flex-row justify-between items-center gap-4'>

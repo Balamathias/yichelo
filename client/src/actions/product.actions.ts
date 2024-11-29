@@ -1,11 +1,11 @@
 'use server'
 
-import { InsertProduct, PaginatedProducts, Product, ProductCategory, InsertCategory, GroupedProduct } from '@/@types/product';
+import { InsertProduct, PaginatedProducts, Product, ProductCategory, InsertCategory, GroupedProduct, ProductFilter } from '@/@types/product';
 
 import api from '@/lib/axios.server'
 
-export const getProducts = async () => {
-  return (await api.get<PaginatedProducts>('/products')).data
+export const getProducts = async (filter?: ProductFilter) => {
+  return (await api.get<PaginatedProducts>('/products', { params: {...filter }})).data
 }
 
 export const getProduct = async (id: string) => {
@@ -62,6 +62,16 @@ export const getGroupedProducts = async (limit=3) => {
     return groupedProducts.data
   } catch (error) {
     console.error('Get grouped products failed:', error)
+    return []
+  }
+}
+
+export const getProductSuggestions = async (keyword: string) => {
+  try {
+    const suggestions = await api.get<string[]>('/products/search/suggestions', { params: { keyword } })
+    return suggestions.data
+  } catch (error) {
+    console.error('Get product suggestions failed:', error)
     return []
   }
 }

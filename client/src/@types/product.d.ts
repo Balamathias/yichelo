@@ -22,6 +22,8 @@ export interface PaginatedProducts {
     currentPage: number;
     itemsPerPage: number;
     totalPages: number;
+    nextPage: number | null
+    prevPage: number | null
   },
 }
 
@@ -61,4 +63,16 @@ interface GroupedProduct {
   count: number;
   avgRating: number;
   totalStock: number;
+}
+
+// category, minPrice, maxPrice, sort, limit, page, keyword
+
+interface ProductFilter {
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sort?: 'price-asc' | 'price-desc' | 'newest';
+  limit?: number;
+  page?: number;
+  keyword?: string;
 }

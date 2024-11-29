@@ -47,7 +47,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
               whileHover={{ scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <img
+              <Image
                 width={80}
                 height={80}
                 src={image}

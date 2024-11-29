@@ -63,7 +63,7 @@ const CartItem = ({ product, quantity: _qty }: Props) => {
   };
 
   return (
-    <div className='flex flex-col sm:flex-row gap-4 p-2.5'>
+    <div className='flex flex-row gap-4 p-2.5'>
       <Image
         src={product.images?.[0]}
         alt={product.name}

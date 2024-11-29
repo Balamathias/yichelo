@@ -9,14 +9,16 @@ import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/lib/store/cart'
 import { LucideShoppingBasket } from 'lucide-react'
 import Link from 'next/link'
+import { useCart } from '@/lib/react-query/cart.query'
 
 interface Props {
   user: User | null,
   cart: Cart | null
 }
 
-const CartItems = ({ cart, user }: Props) => {
+const CartItems = ({ cart: _cart, user }: Props) => {
   const localCarts = useCartStore(state => state.items)
+  const { data: cart } = useCart()
 
   const items = user?._id ? cart?.products : localCarts
 
@@ -32,7 +34,7 @@ const CartItems = ({ cart, user }: Props) => {
   }
 
   return (
-    <div className='flex flex-col gap-4 md:flex-row w-full'>
+    <div className='flex flex-col gap-4 gap-y-8 md:flex-row w-full'>
       <div className='flex flex-col gap-y-4 md:basis-2/3 w-full flex-1'>
         {items?.map((item) => (
           <CartItem key={item.product?._id} product={item.product} quantity={item.quantity}/>

@@ -40,8 +40,9 @@ export const getProducts = async (req: Request, res: Response) => {
     }
     
     if (category) {
-      const cat = await Category.findOne({ name: category as string });
-      query.category = cat?._id;
+      const cat = await Category.findOne({ name: category as string, $text: { $search: category as string } });
+      if (cat)
+        query.category = cat?._id;
     }
 
     if (minPrice || maxPrice) {
@@ -78,6 +79,8 @@ export const getProducts = async (req: Request, res: Response) => {
         currentPage: pageNum,
         itemsPerPage,
         totalPages: Math.ceil(totalItems / itemsPerPage),
+        nextPage: pageNum < Math.ceil(totalItems / itemsPerPage) ? pageNum + 1 : null,
+        prevPage: pageNum > 1 ? pageNum - 1 : null,
       },
     }));
 
@@ -148,17 +151,30 @@ export const getSearchSuggestions = async (req: Request, res: Response) => {
 
   try {
     const suggestions = await Product.find(
-      { name: { $regex: new RegExp(`^${keyword}`, 'i') } },
+      { name: { $regex: new RegExp(keyword.toString(), 'i') } },
       { name: 1 }
     )
       .limit(5)
       .exec();
 
+    if (suggestions.length === 0) {
+      const fallbackSuggestions = await Product.find(
+        {},
+        { name: 1 }
+      )
+        .limit(5)
+        .exec();
+
+      return res.status(200).json(fallbackSuggestions.map((product) => product.name));
+    }
+
     res.status(200).json(suggestions.map((product) => product.name));
   } catch (error) {
+    console.error(error)
     res.status(500).json({ message: 'Error fetching search suggestions', error });
   }
 };
+
 
 export const getSimilarProducts = async (req: Request, res: Response) => {
   const { productId } = req.params;

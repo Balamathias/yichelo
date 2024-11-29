@@ -19,7 +19,7 @@ const ProductInfo = ({ product }: Props) => {
   };
 
   return (
-    <div className='flex flex-1 flex-col gap-y-3 px-4 max-md:py-4'>
+    <div className='flex flex-1 flex-col gap-y-3 md:px-4 max-md:py-4'>
       <div className='flex flex-col gap-y-2'>
         <h2 className='text-2xl text-primary font-bold py-2'>{product.name}</h2>
         <h3 className='text-lg text-primary font-semibold'>{formatCurrency(product.price, 'NGN')}</h3>

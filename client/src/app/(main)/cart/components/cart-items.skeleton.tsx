@@ -8,7 +8,7 @@ const CartItemsSkeleton = () => {
     <div className='flex flex-col gap-4 md:flex-row w-full'>
       <div className='flex flex-col gap-y-4 md:basis-2/3 w-full flex-1'>
         {[...Array(3)].map((_, index) => (
-          <div key={index} className='flex flex-col gap-2 p-2.5 md:flex-row md:gap-4'>
+          <div key={index} className='flex gap-2 p-2.5 flex-row md:gap-4'>
             <Skeleton className='h-32 w-full md:w-40' />
             <div className='flex flex-col gap-y-2 w-full'>
               <Skeleton className='h-6 w-1/2' />
