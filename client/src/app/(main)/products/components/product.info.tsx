@@ -54,7 +54,7 @@ const ProductInfo = ({ product }: Props) => {
         <div className='flex flex-wrap gap-3 items-center'>
           {
             product?.tags?.map((tag, index) => (
-              <Link className='bg-secondary rounded-2xl px-4 py-2.5 hover:opacity-70 transition-opacity' href={'#'} key={index}>{tag}</Link>
+              <Link className='bg-secondary rounded-2xl px-4 py-2.5 hover:opacity-70 transition-opacity' href={`/search/results?tag=${tag}`} key={index}>{tag}</Link>
             ))
           }
         </div>

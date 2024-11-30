@@ -31,8 +31,8 @@ export const updateProduct = async (initial: any, data: InsertProduct) => {
   return product.data
 }
 
-export const getCategories = async () => {
-  const categories = await api.get<ProductCategory[]>('/categories')
+export const getCategories = async (limit?: number) => {
+  const categories = await api.get<ProductCategory[]>('/categories', { params: { limit }})
   return categories.data
 }
 

@@ -13,7 +13,14 @@ const Product = ({ product }: ProductProps) => {
   const productImage = product.images?.[0]
   return (
     <Link href={`/products/${product._id}`} className='rounded-lg flex flex-col gap-y-3 p-1 md:p-4 shadow-none border-none hover:opacity-70 transition-opacity hover:transition-opacity cursor-pointer relative'>
-      <Image src={productImage} alt={product.name} width={200} height={200} className='object-contain w-full h-48 rounded-3xl py-2.5 bg-gray-300 dark:bg-secondary' />
+      <Image 
+        src={productImage} 
+        alt={product.name} 
+        width={500} 
+        height={500} 
+        quality={100}
+        className='object-contain w-full h-48 rounded-3xl py-2.5 bg-gray-300 dark:bg-secondary' 
+      />
 
       {
         product?.badge && (<Badge className='absolute top-6 right-6 capitalize'>{product.badge}</Badge>)

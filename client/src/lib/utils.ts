@@ -45,3 +45,17 @@ export const mobileLinks = [
     temp_href: '/search',
   },
 ]
+
+export const addQueryParams = (qs: string, params: Record<string, string | number | undefined>): string => {
+  const urlParams = new URLSearchParams(qs);
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') {
+      urlParams.delete(key);
+    } else {
+      urlParams.set(key, value.toString());
+    }
+  });
+
+  return `?${urlParams.toString()}`;
+};

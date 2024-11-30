@@ -14,8 +14,9 @@ export const createCategory = async (req: Request, res: Response) => {
 };
 
 export const getCategories = async (req: Request, res: Response) => {
+  const { limit } = req.query;
   try {
-    const categories = await Category.find();
+    const categories = await Category.find().limit(limit ? parseInt(limit as string) : 10);
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving categories', error });

@@ -22,7 +22,7 @@ export const addProduct = async (req: Request, res: Response) => {
 };
 
 export const getProducts = async (req: Request, res: Response) => {
-  const { category, minPrice, maxPrice, sort, limit, page, keyword } = req.query;
+  const { category, minPrice, maxPrice, sort, limit, page, keyword, tag } = req.query;
 
   const cacheKey = `products:${JSON.stringify(req.query)}`;
 
@@ -40,9 +40,13 @@ export const getProducts = async (req: Request, res: Response) => {
     }
     
     if (category) {
-      const cat = await Category.findOne({ name: category as string, $text: { $search: category as string } });
+      const cat = await Category.findOne({ name: { $regex: new RegExp(category as string, 'i') } });
       if (cat)
         query.category = cat?._id;
+    }
+
+    if (tag) {
+      query.tags = { $in: [tag] };
     }
 
     if (minPrice || maxPrice) {

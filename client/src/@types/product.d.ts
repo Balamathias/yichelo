@@ -65,8 +65,6 @@ interface GroupedProduct {
   totalStock: number;
 }
 
-// category, minPrice, maxPrice, sort, limit, page, keyword
-
 interface ProductFilter {
   category?: string;
   minPrice?: number;
@@ -75,4 +73,5 @@ interface ProductFilter {
   limit?: number;
   page?: number;
   keyword?: string;
+  tag?: string;
 }
