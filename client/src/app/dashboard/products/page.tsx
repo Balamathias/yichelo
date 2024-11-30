@@ -1,4 +1,4 @@
-const Page = async ({ searchParams }: { searchParams: { [key: string]: string} }) => {
+const Page = () => {
   return (
     <div className='mx-auto w-full max-w-7xl p-4 md:p-10 md:px-12'>
       <div className='flex items-center justify-between w-full flex-1'>

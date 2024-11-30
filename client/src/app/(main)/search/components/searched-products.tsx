@@ -51,7 +51,7 @@ const SearchProducts = () => {
   return (
     <div className="flex flex-col gap-y-5">
 
-      <h1 className="text-2xl font-semibold">Search results for "{keyword || tag}"</h1>
+      <h1 className="text-2xl font-semibold">Search results for &quot;{keyword || tag}&quot;</h1>
       
       <div className='w-full'>
       {
@@ -69,7 +69,7 @@ const SearchProducts = () => {
                 ): (
                   <div className='p-4 rounded-xl flex-col text-brand w-full flex items-center justify-center gap-4'>
                     <LucideAlertTriangle size={40} className='' />
-                    <p className='text-muted-foreground'>No products found for keyword "{keyword || tag}".</p>
+                    <p className='text-muted-foreground'>No products found for keyword &quot;{keyword || tag}&quot;.</p>
                   </div>
                 )
               }

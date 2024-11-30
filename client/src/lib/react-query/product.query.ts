@@ -18,7 +18,7 @@ export const useSuggestions = (keyword: string) => useQuery({
   queryFn: () => getProductSuggestions(keyword),
 })
 
-// @ts-ignore: Unreachable code error
+// @ts-expect-error: Unreachable code error
 export const useInfiniteProducts = (filters?: ProductFilter) => useInfiniteQuery({
   queryKey: ['products', filters],
   queryFn: async ({ pageParam = 1 }: { pageParam: number }) => {

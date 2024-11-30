@@ -31,7 +31,8 @@ export async function generateMetadata(
   }
 }
 
-const Page = ({ params }: { params: { productId: string }}) => {
+const Page = async ({ params: promisedParams }: Props) => {
+  const params = await promisedParams
   return (
     <div className="flex flex-col max-w-7xl mx-auto gap-y-5 py-6 md:p-4">
       <Suspense fallback={<ProductDetailSkeleton />}>

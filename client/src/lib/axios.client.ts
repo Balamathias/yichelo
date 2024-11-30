@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { parseCookies } from 'nookies';
-import jwt_decode from 'jwt-decode';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000',
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api',
   withCredentials: true,
 });
 

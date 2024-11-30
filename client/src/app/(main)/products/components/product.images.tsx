@@ -74,7 +74,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
             }}
             className="relative flex-1 inset-0 p-0"
           >
-            <img
+            <Image
               width={1000}
               height={1000}
               src={images[mainImageIndex]}
