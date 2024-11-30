@@ -43,7 +43,7 @@ const BottomBar = () => {
           open={openSearch}
           setOpen={setOpenSearch}
           dialogOnly
-          dialogClassName='bg-background/10 backdrop:blur-lg'
+          dialogClassName='bg-transparent backdrop:blur-lg shadow-none border-none'
           >
             <div className='flex flex-col gap-4'>
               <SearchBar />
