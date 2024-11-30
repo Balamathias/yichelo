@@ -4,7 +4,6 @@ import { useInfiniteProducts } from '@/lib/react-query/product.query'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 import Product from '../../components/product'
-import { Button } from '@/components/ui/button'
 import ProductsSkeleton from '../../components/products.skeleton'
 import { LucideAlertTriangle } from 'lucide-react'
 import useInfiniteScroll from '@/hooks/use-infinite-scroll'
@@ -54,9 +53,9 @@ const AllProducts = () => {
     return <ProductsSkeleton />
   }
   return (
-    <div className="flex flex-col gap-y-5">
+    <div className="flex flex-col gap-y-3 mt-3">
 
-      <h1 className="text-2xl font-semibold">All Products</h1>
+      <h1 className="text-2xl md:text-3xl font-semibold">Find Gadgets</h1>
       
       <div className='w-full'>
       {

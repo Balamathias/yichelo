@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import ProductsSkeleton from './components/products.skeleton';
 import ProductGroups from './components/product.grouped';
 import ProductGroupSkeleton from './components/product-group-skeleton';
+import AllProducts from './products/components/all-products';
 
 export const metadata: Metadata = {
   title: `Home ~ Discover gadgets | ${BRAND_NAME}`,
@@ -20,9 +21,10 @@ export default async function Home() {
           <ProductGroups />
         </Suspense>
 
-        <Suspense fallback={<ProductsSkeleton />}>
+        <AllProducts />
+        {/* <Suspense fallback={<ProductsSkeleton />}>
           <Products />
-        </Suspense>
+        </Suspense> */}
       </div>
     </div>
   );

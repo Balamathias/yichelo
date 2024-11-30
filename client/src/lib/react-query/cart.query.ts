@@ -1,6 +1,7 @@
 import { useQuery, useMutation, QueryClient } from '@tanstack/react-query';
 import { addToCart, getCart, removeFromCart, syncCart, updateCart } from '../../actions/cart.actions';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export enum CART_KEYS {
   CART = 'cart',
@@ -17,29 +18,40 @@ export const useCart = () => useQuery({
   queryFn: getCart,
 })
 
-export const useAddToCart = () => useMutation({
-  mutationKey: [CART_KEYS.ADD_TO_CART],
-  mutationFn: ({ productId, quantity }: { productId: string, quantity: number }) => addToCart(productId, quantity),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: [CART_KEYS.CART] })
-  },
-  onError: (error) => {
-    console.error(error)
-    toast.error('Failed to add to cart')
-  }
-})
+export const useAddToCart = () => {
+  const router = useRouter()
 
-export const useRemoveFromCart = () => useMutation({
-  mutationKey: [CART_KEYS.REMOVE_FROM_CART],
-  mutationFn: (productId: string) => removeFromCart(productId),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: [CART_KEYS.CART] })
-  },
-  onError: (error) => {
-    console.error(error)
-    toast.error('Failed to remove from cart')
-  }
-})
+  return useMutation({
+    mutationKey: [CART_KEYS.ADD_TO_CART],
+    mutationFn: ({ productId, quantity }: { productId: string, quantity: number }) => addToCart(productId, quantity),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [CART_KEYS.CART] })
+      router.refresh()
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error('Failed to add to cart')
+    }
+  })
+  
+}
+export const useRemoveFromCart = () => {
+
+  const router = useRouter()
+
+  return useMutation({
+    mutationKey: [CART_KEYS.REMOVE_FROM_CART],
+    mutationFn: (productId: string) => removeFromCart(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [CART_KEYS.CART] })
+      router.refresh()
+    },
+    onError: (error) => {
+      console.error(error)
+      toast.error('Failed to remove from cart')
+    }
+  })
+}
 
 export const useUpdateCart = () => useMutation({
   mutationKey: [CART_KEYS.UPDATE_CART],

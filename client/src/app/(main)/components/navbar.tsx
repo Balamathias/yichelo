@@ -37,11 +37,11 @@ const Navbar = ({ user }: Props) => {
 
           <ul className='flex-row gap-4 items-center hidden md:flex'>
             <li>
-              <Link href='/explore'>Explore</Link>
+              <Link href='/products'>Products</Link>
             </li>
 
             <li>
-              <Link href='/products'>Products</Link>
+              <Link href='/explore'>Explore</Link>
             </li>
           </ul>
         </div>

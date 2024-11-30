@@ -7,10 +7,16 @@ import Product from '../../components/product'
 import { Button } from '@/components/ui/button'
 import ProductsSkeleton from '../../components/products.skeleton'
 import { LucideAlertTriangle } from 'lucide-react'
+import { ProductFilter } from '@/@types/product'
 
 const SearchProducts = () => {
-  const keyword = useSearchParams().get('q') || ''
-  const tag = useSearchParams().get('tag') || ''
+
+  const searchParams = useSearchParams()
+  const keyword = searchParams.get('q') || ''
+  const tag = searchParams.get('tag') || ''
+  const sort = searchParams.get('sort') || ''
+  const maxPrice = searchParams.get('max_price') || ''
+  const minPrice = searchParams.get('min_price') || ''
 
   const {
     data,
@@ -24,6 +30,9 @@ const SearchProducts = () => {
     keyword: keyword,
     limit: 20,
     tag,
+    sort: sort as ProductFilter['sort'],
+    maxPrice: maxPrice ? Number(maxPrice) : undefined,
+    minPrice: minPrice ? Number(minPrice) : undefined
   })
 
 

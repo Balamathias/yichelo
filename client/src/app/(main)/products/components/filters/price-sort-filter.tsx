@@ -66,8 +66,8 @@ const PriceSortFilter = ({ promiseCategories }: Props) => {
       setOpen={setOpen}
       open={open}
       trigger={
-        <Button variant="secondary" className="flex items-center gap-2 rounded-2xl" size={'icon'}>
-          <FilterIcon />
+        <Button variant="secondary" className="flex items-center gap-2 rounded-2xl" size={'default'}>
+          <FilterIcon /> {''} Filters
         </Button>
       }
     >
@@ -75,24 +75,30 @@ const PriceSortFilter = ({ promiseCategories }: Props) => {
         <div className="flex flex-col gap-y-2.5">
           <Label className='text-sm font-semibold'>Price Range</Label>
           <div className='flex items-center gap-3'>
-            <Input
-              type='number'
-              name='minPrice'
-              value={price.minPrice}
-              onChange={handlePriceChange}
-              placeholder='Min Price'
-              className='w-1/2 p-2 border rounded-xl focus:outline-none'
-            />
-            <Input
-              type='number'
-              name='maxPrice'
-              value={price.maxPrice}
-              onChange={handlePriceChange}
-              placeholder='Max Price'
-              className='w-1/2 p-2 borderrounded-xl focus:outline-none'
-            />
+            <div className='flex flex-col gap-y-1 flex-1 w-full'>
+              <Label className='text-sm text-muted' htmlFor='minPrice'>Min Price</Label>
+              <Input
+                type='number'
+                name='minPrice'
+                value={price.minPrice}
+                onChange={handlePriceChange}
+                placeholder='Min Price'
+                className='w-1/2 p-2 border rounded-xl focus:outline-none'
+              />
+            </div>
+            <div className='flex flex-col gap-y-1 flex-1 w-full'>
+              <Label className='text-sm text-muted' htmlFor='maxPrice'>Max Price</Label>
+              <Input
+                type='number'
+                name='maxPrice'
+                value={price.maxPrice}
+                onChange={handlePriceChange}
+                placeholder='Max Price'
+                className='w-1/2 p-2 border rounded-xl focus:outline-none'
+              />
+            </div>
           </div>
-          <div className='flex justify-end w-full'>
+          <div className='flex w-full'>
             <DialogClose asChild>
               <Button 
                 variant='default'

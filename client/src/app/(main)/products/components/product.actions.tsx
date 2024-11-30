@@ -15,9 +15,9 @@ interface Props {
 
 const ProductActions = ({ product }: Props) => {
   
+  const { data: cart } = useCart()
   const { mutate: addToCart, isPending: addingToCart } = useAddToCart()
   const { mutate: removeFromCart, isPending: removingFromCart } = useRemoveFromCart()
-  const { data: cart } = useCart()
 
   const { user } = useAuth()
   

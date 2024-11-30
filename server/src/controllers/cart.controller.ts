@@ -16,20 +16,24 @@ export const addOrUpdateCartItem = async (req: Request, res: Response) => {
     }
 
     const existingProductIndex = cart.products.findIndex(p => p.product.toString() === productId);
+
     if (existingProductIndex > -1) {
-      cart.products[existingProductIndex].quantity += quantity;
+      cart.products[existingProductIndex].quantity = quantity;
     } else {
       cart.products.push({ product: productId, quantity });
     }
 
-    cart.totalPrice = cart.products.reduce((total, item) => {
-      const productPrice = item.product.toString() === productId ? product.price : 0;
-      return total + productPrice * item.quantity;
-    }, 0);
+    cart.totalPrice = await cart.products.reduce(async (totalPromise, item) => {
+      const total = await totalPromise;
+      const product = await Product.findById(item.product);
+      return total + (product?.price || 0) * item.quantity;
+    }, Promise.resolve(0));
 
     await cart.save();
+
     res.status(200).json(cart);
   } catch (error) {
+    console.error('Error updating cart:', error);
     res.status(500).json({ message: 'Failed to update cart', error });
   }
 };

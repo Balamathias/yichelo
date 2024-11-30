@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchProducts from '../components/searched-products'
+import ProductFilters from '../../products/components/filter-products'
 
 interface Props {
   params: Promise<{ slug: string }>,
@@ -27,6 +28,7 @@ const Page = ({ searchParams }: Props) => {
   return (
     <div className="flex flex-col max-w-7xl mx-auto gap-y-5 py-6">
       <div className='flex flex-col gap-y-6 px-2.5 md:px-10'>
+        <ProductFilters />
         <SearchProducts />
       </div>
     </div>
