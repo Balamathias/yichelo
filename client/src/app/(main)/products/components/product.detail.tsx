@@ -11,7 +11,7 @@ const ProductDetail = async ({ productId }: Props) => {
   const product = await getProduct(productId)
 
   return (
-    <div className='flex flex-col md:flex-row gap-8'>
+    <div className='flex flex-col md:flex-row gap-y-8 md:gap-x-8'>
       <ProductImages images={product.images} />
       <ProductInfo product={product} />
     </div>

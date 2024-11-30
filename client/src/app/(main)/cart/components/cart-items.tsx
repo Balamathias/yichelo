@@ -34,7 +34,7 @@ const CartItems = ({ cart: _cart, user }: Props) => {
   }
 
   return (
-    <div className='flex flex-col gap-4 gap-y-8 md:flex-row w-full'>
+    <div className='flex flex-col gap-4 gap-y-8 md:flex-row w-full h-full justify-between'>
       <div className='flex flex-col gap-y-4 md:basis-2/3 w-full flex-1'>
         {items?.map((item) => (
           <CartItem key={item.product?._id} product={item.product} quantity={item.quantity}/>

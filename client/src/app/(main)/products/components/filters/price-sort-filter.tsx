@@ -76,7 +76,7 @@ const PriceSortFilter = ({ promiseCategories }: Props) => {
           <Label className='text-sm font-semibold'>Price Range</Label>
           <div className='flex items-center gap-3'>
             <div className='flex flex-col gap-y-1 flex-1 w-full'>
-              <Label className='text-sm text-muted' htmlFor='minPrice'>Min Price</Label>
+              <Label className='text-sm text-muted-foreground dark:text-muted' htmlFor='minPrice'>Min Price</Label>
               <Input
                 type='number'
                 name='minPrice'
@@ -87,7 +87,7 @@ const PriceSortFilter = ({ promiseCategories }: Props) => {
               />
             </div>
             <div className='flex flex-col gap-y-1 flex-1 w-full'>
-              <Label className='text-sm text-muted' htmlFor='maxPrice'>Max Price</Label>
+              <Label className='text-sm text-muted-foreground dark:text-muted' htmlFor='maxPrice'>Max Price</Label>
               <Input
                 type='number'
                 name='maxPrice'

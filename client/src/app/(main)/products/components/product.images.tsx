@@ -34,9 +34,9 @@ const ProductImages = ({ images }: { images: string[] }) => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-5">
       <div className="flex max-md:gap-4 md:gap-x-4 flex-col-reverse sm:flex-row">
-        <div className="flex md:flex-col items-center gap-4 flex-1 flex-wrap max-sm:justify-center">
+        <div className="flex md:flex-col items-center gap-4 flex-1 flex-wrap">
           {images.map((image, index) => (
             <motion.div
               key={index}
