@@ -34,14 +34,14 @@ const CartItems = ({ cart: _cart, user }: Props) => {
   }
 
   return (
-    <div className='flex flex-col gap-4 gap-y-8 md:flex-row w-full h-full justify-between'>
+    <div className='flex flex-col gap-4 gap-y-8 md:flex-row w-full h-full max-md:min-h-[90vh] justify-between'>
       <div className='flex flex-col gap-y-4 md:basis-2/3 w-full flex-1'>
         {items?.map((item) => (
           <CartItem key={item.product?._id} product={item.product} quantity={item.quantity}/>
         ))}
       </div>
 
-      <div className='flex flex-col gap-y-4 p-4 md:p-6 rounded-xl border w-full justify-between flex-1 md:min-w-[400px]'>
+      <div className='flex flex-col gap-y-4 p-4 md:p-6 rounded-xl border w-full justify-between md:flex-1 md:min-w-[400px]'>
         <div className='flex flex-col gap-y-2.5'>
           <h2 className='text-2xl font-semibold'>Order Summary</h2>
 

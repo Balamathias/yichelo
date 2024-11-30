@@ -7,6 +7,7 @@ import { useSuggestions } from '@/lib/react-query/product.query';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const SearchBar = () => {
 
@@ -17,6 +18,7 @@ const SearchBar = () => {
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter()
+  const mobile = useIsMobile()
 
   const debouncedQuery = useDebounce(query, 500);
 
@@ -57,7 +59,7 @@ const SearchBar = () => {
     <div className="relative flex items-center" ref={dropdownRef}>
       <motion.div
         initial={{ width: 48 }}
-        animate={{ width: 400 }}
+        animate={{ width: (mobile ? '100%' : 400)}}
         className="flex items-center bg-secondary rounded-full shadow-none overflow-hidden transition-all duration-300"
       >
         <button
