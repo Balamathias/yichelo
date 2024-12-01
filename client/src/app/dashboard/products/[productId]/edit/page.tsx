@@ -7,8 +7,9 @@ export const metadata: Metadata = {
   title: 'Update Product'
 }
 
-interface Props {
+type Props = {
   params: Promise<{ productId: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 const Page = async ({ params }: Props) => {
