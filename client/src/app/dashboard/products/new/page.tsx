@@ -2,7 +2,7 @@ import { getCategories } from "@/actions/product.actions"
 import NewProductForm, { NewProductFormSkeleton } from "../components/new-product-form"
 import { Suspense } from "react"
 
-const Page = async () => {
+const Page = () => {
   const getCats = getCategories()
   return (
     <div className='mx-auto w-full max-w-7xl px-4 md:px-12'>
