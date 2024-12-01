@@ -1,7 +1,10 @@
 'use client'
 
 import { ListEnd, Home, Inbox, Search, Settings2 as Settings } from "lucide-react"
- 
+import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
+
+
 import {
   Sidebar,
   SidebarContent,
@@ -22,32 +25,33 @@ import Image from "next/image"
 const items = [
     {
       title: "Home",
-      url: "#",
+      url: "/dashboard",
       icon: Home,
     },
     {
       title: "Products",
-      url: "#",
+      url: "/dashboard/products",
       icon: Inbox,
     },
     {
       title: "Categories",
-      url: "#",
+      url: "/dashboard/categories",
       icon: ListEnd,
     },
     {
       title: "Search",
-      url: "#",
+      url: "/dashboard/search",
       icon: Search,
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/dashboard/settings",
       icon: Settings,
     },
   ]
 
 export default function AppSidebar() {
+    const path = usePathname()
     return (
     <Sidebar>
         <SidebarHeader className="py-4 mb-3">
@@ -70,7 +74,7 @@ export default function AppSidebar() {
                     <SidebarMenu className="gap-y-5">
                     {items.map((item) => (
                         <SidebarMenuItem key={item.title} className="text-base">
-                            <SidebarMenuButton asChild size={'lg'}>
+                            <SidebarMenuButton asChild size={'lg'} className={cn('', item?.url === path && 'bg-brand/25 text-brand dark:text-brand-light dark:bg-brand-light/25')}>
                                 <Link href={item.url} className="py-3 text-base">
                                     <item.icon className="w-10 h-10" size={32} />
                                     <span className="text-base">{item.title}</span>

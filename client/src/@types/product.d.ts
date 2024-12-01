@@ -28,6 +28,7 @@ export interface PaginatedProducts {
 }
 
 export interface InsertProduct {
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -38,6 +39,10 @@ export interface InsertProduct {
   tags?: string[];
   rating?: number;
   badge?: string;
+}
+
+export interface UpdateProduct extends InsertProduct {
+  _id: string
 }
 
 export interface ProductCategory {

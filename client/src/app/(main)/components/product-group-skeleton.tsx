@@ -1,3 +1,4 @@
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
@@ -6,11 +7,26 @@ const ProductGroupSkeleton = () => {
     <div className="flex flex-col gap-y-6">
       <Skeleton className="h-8 w-1/2" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <Skeleton key={index} className="w-full h-64 rounded-xl" />
-        ))}
-      </div>
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full flex flex-col gap-y-2"
+      >
+        <CarouselContent className='w-full'>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <CarouselItem key={index} className="basis-[80%] md:basis-[44%] lg:basis-[30%]">
+              <div className="p-1">
+                <Skeleton key={index} className="w-full h-64 rounded-xl" />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <div className='items-center gap-4 relative w-full hidden'>
+          <Skeleton className="w-8 h-8 rounded-full" />
+          <Skeleton className="w-8 h-8 rounded-full" />
+        </div>
+      </Carousel>
     </div>
   )
 }

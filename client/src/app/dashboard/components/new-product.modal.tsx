@@ -27,7 +27,7 @@ const NewProduct = () => {
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size={'icon'} variant={'ghost'} className='rounded-full flex items-center justify-center bg-secondary/25'>
+              <Button size={'icon'} variant={'ghost'} className='rounded-full flex items-center justify-center bg-pink-500/25 text-pink-500'>
                 <LucidePlus size={28} className='w-8 h-8' />
               </Button>
             </TooltipTrigger>

@@ -22,25 +22,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ProductCategory } from '@/@types/product';
+import { Product, ProductCategory } from '@/@types/product';
 import { LucideLoader, LucidePlus, LucideTrash } from 'lucide-react';
 import Link from 'next/link';
-import { useCreateProduct } from '@/lib/react-query/product.query';
+import { useCreateProduct, useUpdateProduct } from '@/lib/react-query/product.query';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Props {
   getCategories: Promise<ProductCategory[]>;
+  product?: Product;
 }
 
-const NewProductForm = ({ getCategories }: Props) => {
+const NewProductForm = ({ getCategories, product }: Props) => {
   const { mutate: createProductAction, isPending: loading } = useCreateProduct()
+  const { mutate: updateProduct, isPending: updating } = useUpdateProduct()
 
-  const [images, setImages] = React.useState<string[]>([]);
-  const [features, setFeatures] = React.useState<string[]>(['']);
-  const [tags, setTags] = React.useState<string[]>(['']);
+  const [images, setImages] = React.useState<string[]>(product?.images || []);
+  const [features, setFeatures] = React.useState<string[]>(product?.features || ['']);
+  const [tags, setTags] = React.useState<string[]>(product?.tags || ['']);
+
+  const router = useRouter()
 
   const categories = use(getCategories);
-
+  
   const searchParams = useSearchParams();
   const starter = searchParams.get('starter');
 
@@ -80,7 +87,9 @@ const NewProductForm = ({ getCategories }: Props) => {
     const data = new FormData(e.currentTarget);
     e.currentTarget.reset();
 
-    createProductAction({
+    const action = product ? updateProduct : createProductAction;
+
+    action({
       category: data.get('category') as string,
       name: data.get('name') as string,
       description: data.get('description') as string,
@@ -89,16 +98,18 @@ const NewProductForm = ({ getCategories }: Props) => {
       stock: Number(data.get('stock')),
       badge: data.get('badge') as string,
       features,
-      tags
+      tags,
+      _id: product?._id as string
     }, {
       onSuccess: () => {
-        toast.success('Product created successfully');
+        toast.success(`Product ${product ? 'updated': 'created'} successfully`);
         setTags([''])
         setFeatures([''])
         setImages([])
+        router.replace('/dashboard/products')
       },
       onError: (err) => {
-        toast.error('Failed to create product', { description: err?.message });
+        toast.error(`Failed to ${product ? 'update': 'create'} product`, { description: err?.message });
       }
     });
   };
@@ -110,7 +121,7 @@ const NewProductForm = ({ getCategories }: Props) => {
           <Label htmlFor="category" className="text-muted-foreground">
             Select Product Category
           </Label>
-          <Select name="category">
+          <Select name="category" defaultValue={categories?.find(cat => cat?._id === product?.category)?.name}>
             <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary">
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
@@ -175,7 +186,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             name="name"
             placeholder="Enter product name"
             className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
-            defaultValue={starter || ''}
+            defaultValue={product?.name || starter || ''}
           />
         </div>
 
@@ -187,6 +198,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             id="description"
             name="description"
             placeholder="Enter product description"
+            defaultValue={product?.description || ''}
             className="border-b-2 border-secondary p-4 rounded-none min-h-36 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none"
           />
         </div>
@@ -201,7 +213,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             name="price"
             placeholder="Enter product price"
             className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
-            defaultValue="0.00"
+            defaultValue={product?.price || "0.00"}
           />
         </div>
 
@@ -215,7 +227,7 @@ const NewProductForm = ({ getCategories }: Props) => {
             name="stock"
             placeholder="Enter Stock Quantity"
             className="border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary"
-            defaultValue="1"
+            defaultValue={product?.stock || "0"}
           />
         </div>
 
@@ -244,7 +256,7 @@ const NewProductForm = ({ getCategories }: Props) => {
           <Label htmlFor="badge" className="text-muted-foreground">
             Product badge
           </Label>
-          <Select name="badge">
+          <Select name="badge" defaultValue={product?.badge}>
             <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary">
               <SelectValue placeholder="Select Badge" />
             </SelectTrigger>
@@ -288,13 +300,79 @@ const NewProductForm = ({ getCategories }: Props) => {
           </Button>
 
           <Button size="lg" disabled={loading} className='rounded-xl'>
-            { loading && <LucideLoader size={24} className='mr-2 animate-spin' /> }
-            {loading ? 'Creating...' : 'Create Product'}
+            { loading || updating && <LucideLoader size={24} className='mr-2 animate-spin' /> }
+            {loading || updating ? product ? 'Updating' : 'Creating...' : product ? 'Update Product' : 'Create Product'}
           </Button>
         </div>
       </form>
     </div>
   );
 };
+
+export const NewProductFormSkeleton = () => {
+  return (
+    <div className="flex flex-col py-8 gap-y-6">
+      <div className="flex flex-col gap-y-7">
+        {/* Category Selector Skeleton */}
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/3 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        {/* Image Upload Skeleton */}
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-64 w-full bg-muted rounded-lg" />
+        </div>
+
+        {/* Input Fields Skeleton */}
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/3 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-24 w-full bg-muted rounded-md" />
+        </div>
+
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        {/* Features Skeleton */}
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        {/* Badge Selector Skeleton */}
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        {/* Tags Skeleton */}
+        <div className="flex flex-col gap-y-4">
+          <Skeleton className="h-4 w-1/4 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-full bg-muted rounded-md" />
+        </div>
+
+        {/* Buttons Skeleton */}
+        <div className="flex justify-between">
+          <Skeleton className="h-12 w-32 bg-muted rounded-md" />
+          <Skeleton className="h-12 w-32 bg-muted rounded-md" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 export default NewProductForm;

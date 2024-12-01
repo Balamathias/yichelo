@@ -66,6 +66,7 @@ export const getProducts = async (req: Request, res: Response) => {
       sortOptions.price = -1;
     } else if (sort === 'newest') {
       sortOptions.createdAt = -1;
+      sortOptions.updatedAt = -1;
     }
 
     const products = await Product.find(query)

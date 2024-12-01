@@ -1,6 +1,6 @@
 'use server'
 
-import { InsertProduct, PaginatedProducts, Product, ProductCategory, InsertCategory, GroupedProduct, ProductFilter } from '@/@types/product';
+import { InsertProduct, PaginatedProducts, Product, ProductCategory, InsertCategory, GroupedProduct, ProductFilter, UpdateProduct } from '@/@types/product';
 
 import api from '@/lib/axios.server'
 
@@ -20,14 +20,14 @@ export const getProductsByCategory = async (category: string) => {
   return (await api.get<Product[]>(`/products/category/${category}`)).data
 }
 
-export const createProduct = async (initial: any, data: InsertProduct) => {
+export const createProduct = async (data: InsertProduct) => {
   const product = await api.post<Product>('/products', data)
 
   return product.data
 }
 
-export const updateProduct = async (initial: any, data: InsertProduct) => {
-  const product = await api.put<Product>('/products', data)
+export const updateProduct = async (data: UpdateProduct) => {
+  const product = await api.put<Product>(`/products/${data?._id}`, data)
   return product.data
 }
 

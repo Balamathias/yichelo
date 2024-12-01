@@ -1,5 +1,5 @@
 import { getCategories } from "@/actions/product.actions"
-import NewProductForm from "../components/new-product-form"
+import NewProductForm, { NewProductFormSkeleton } from "../components/new-product-form"
 import { Suspense } from "react"
 
 const Page = async () => {
@@ -14,7 +14,7 @@ const Page = async () => {
         <h1 className='text-xl hidden md:block font-bold'>{'New Product'}</h1>
       </div>
       
-      <Suspense fallback={'loading...'}>
+      <Suspense fallback={<NewProductFormSkeleton />}>
         <NewProductForm getCategories={getCats} />
       </Suspense>
     </div>

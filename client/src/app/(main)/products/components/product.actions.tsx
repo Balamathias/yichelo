@@ -3,11 +3,9 @@
 import React from "react"
 import { Product } from "@/@types/product"
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/lib/store/cart"
-import { useAddToCart, useCart, useRemoveFromCart } from '@/lib/react-query/cart.query'
 
 import { LucidePlus, LucideMinus } from 'lucide-react'
-import { useAuth } from "@/lib/react-query/user.query"
+import useCartActions from "@/hooks/use-cart-actions"
 
 interface Props {
   product: Product
@@ -15,72 +13,12 @@ interface Props {
 
 const ProductActions = ({ product }: Props) => {
   
-  const { data: cart } = useCart()
-  const { mutate: addToCart, isPending: addingToCart } = useAddToCart()
-  const { mutate: removeFromCart, isPending: removingFromCart } = useRemoveFromCart()
-
-  const { user } = useAuth()
-  
-  const localAddToCart = useCartStore((state) => state.add)
-  const localRemoveFromCart = useCartStore((state) => state.remove)
-  const localItems = useCartStore((state) => state.items)
-  const localUpdateQuantity = useCartStore((state) => state.updateQuantity)
-
-  const cartItem = user?._id ? cart?.products?.find((item) => item.product._id === product._id) : localItems.find((item) => item.product._id === product._id)
-  const [quantity, setQuantity] = React.useState(cartItem?.quantity || 0)
-
-  const handleAddToCart = () => {
-    if (quantity === 0) {
-      const newQuantity = 1
-      setQuantity(newQuantity)
-      if (user?._id) {
-        addToCart({ productId: product?._id, quantity: newQuantity })
-      } else {
-        localAddToCart({ product, quantity: newQuantity })
-      }
-    } else {
-      setQuantity(0)
-      if (user?._id) {
-        removeFromCart(product?._id)
-      } else {
-        localRemoveFromCart({ product, quantity }, user?._id)
-      }
-    }
-  }
-
-  const incrementQuantity = () => {
-    const newQuantity = quantity + 1
-    setQuantity(newQuantity)
-    if (user?._id) {
-      addToCart({ productId: product?._id, quantity: newQuantity })
-    } else {
-      localAddToCart({ product, quantity: newQuantity })
-    }
-  }
-
-  const decrementQuantity = () => {
-    if (quantity > 0) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-  
-      if (newQuantity === 0) {
-        if (user?._id) {
-          removeFromCart(product?._id)
-        } else {
-          localRemoveFromCart({ product, quantity: 1 }, user?._id)
-        }
-      } else {
-        if (user?._id) {
-          addToCart({ productId: product?._id, quantity: newQuantity })
-        } else {
-          localUpdateQuantity(product._id, newQuantity, user?._id);
-        }
-      }
-    }
-  };
-  
-  
-
+  const {
+    quantity,
+    incrementQuantity,
+    decrementQuantity,
+    handleAddToCart
+  } = useCartActions(product)
   return (
     <div className="flex flex-col gap-y-3 py-4">
       <div className="flex items-center justify-between gap-x-4">

@@ -4,12 +4,9 @@ import React from 'react';
 import Image from 'next/image';
 import { Product } from '@/@types/product';
 import { Button } from '@/components/ui/button';
-import { useAddToCart, useRemoveFromCart } from '@/lib/react-query/cart.query';
-import { useCart } from '@/lib/react-query/cart.query';
-import { useAuth } from '@/lib/react-query/user.query';
-import { useCartStore } from '@/lib/store/cart';
 import { formatNigerianCurrency } from '@/lib/utils';
 import { LucideLoader, LucideMinus, LucidePlus } from 'lucide-react';
+import useCartActions from '@/hooks/use-cart-actions'
 
 interface Props {
   product: Product;
@@ -17,59 +14,14 @@ interface Props {
 }
 
 const CartItem = ({ product }: Props) => {
-  const { mutate: addToCart } = useAddToCart();
-  const { mutate: removeFromCart } = useRemoveFromCart();
-  const { data: cart, isPending: gettingCart } = useCart();
+  const {
+    quantity,
+    incrementQuantity,
+    decrementQuantity,
+    handleAddToCart,
+    gettingCart
 
-  const { user } = useAuth();
-
-  const localAddToCart = useCartStore((state) => state.add);
-  const localRemoveFromCart = useCartStore((state) => state.remove);
-  const localItems = useCartStore((state) => state.items);
-
-  const cartItem = user?._id
-    ? cart?.products?.find((item) => item.product._id === product._id)
-    : localItems.find((item) => item.product._id === product._id);
-
-  const [quantity, setQuantity] = React.useState(cartItem?.quantity || 0);
-
-  React.useEffect(() => {
-    if (cartItem?.quantity !== undefined) {
-      setQuantity(cartItem.quantity);
-    }
-  }, [cartItem]);
-
-  const incrementQuantity = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-
-    if (user?._id) {
-      addToCart({ productId: product?._id, quantity: newQuantity });
-    } else {
-      localAddToCart({ product, quantity: newQuantity });
-    }
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 0) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-
-      if (newQuantity === 0) {
-        if (user?._id) {
-          removeFromCart(product?._id);
-        } else {
-          localRemoveFromCart({product: product, quantity: newQuantity});
-        }
-      } else {
-        if (user?._id) {
-          addToCart({ productId: product?._id, quantity: newQuantity });
-        } else {
-          localAddToCart({ product, quantity: newQuantity });
-        }
-      }
-    }
-  };
+  } = useCartActions(product)
 
   return (
     <div className="flex flex-row gap-4 p-2.5">

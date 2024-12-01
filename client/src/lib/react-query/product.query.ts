@@ -1,11 +1,16 @@
-import { InsertCategory, InsertProduct, PaginatedProducts, ProductFilter } from '@/@types/product'
-import { createCategory, createProduct, getProducts, getProductSuggestions } from '@/actions/product.actions'
+import { InsertCategory, InsertProduct, PaginatedProducts, ProductFilter, UpdateProduct } from '@/@types/product'
+import { createCategory, createProduct, getProducts, getProductSuggestions, updateProduct } from '@/actions/product.actions'
 import { useMutation, useQuery, useInfiniteQuery } from '@tanstack/react-query'
 
 
 export const useCreateProduct = () => useMutation({
   mutationKey: ['createProduct'],
-  mutationFn: (data: InsertProduct) => createProduct(undefined, data),
+  mutationFn: (data: InsertProduct) => createProduct(data),
+})
+
+export const useUpdateProduct = () => useMutation({
+  mutationKey: ['updateProduct'],
+  mutationFn: (data: UpdateProduct) => updateProduct(data),
 })
 
 export const useCreateCategory = () => useMutation({
