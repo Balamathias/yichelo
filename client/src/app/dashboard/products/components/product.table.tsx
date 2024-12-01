@@ -62,7 +62,7 @@ const ProductTable = async ({ filters }: ProductTableProps) => {
                 />
               </TableCell>
 
-              <TableCell className="flex items-center gap-0.5">
+              <TableCell className="flex items-center flex-row-reverse gap-0.5">
                 <Button variant={'ghost'} size={'icon'} className='rounded-xl'>
                   <LucideTrash className="text-red-500"/>
                 </Button>

@@ -7,10 +7,14 @@ export const metadata: Metadata = {
   title: 'Update Product'
 }
 
-const Page = async ({ params: { productId } }: { params: { productId: string }}) => {
+interface Props {
+  params: Promise<{ productId: string }>
+}
+
+const Page = async ({ params }: Props) => {
 
   const getCats = getCategories()
-  const product = await getProduct(productId)
+  const product = await getProduct((await params)?.productId)
 
   return (
     <div className='mx-auto w-full max-w-7xl px-4 md:px-12'>
