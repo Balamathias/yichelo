@@ -3,7 +3,13 @@ import ProductTable, { ProductTableSkeleton } from "@/app/dashboard/products/com
 import { ProductFilter } from "@/@types/product"
 import SearchProducts from "./components/search-products"
 
-const Page = ({ searchParams }: { searchParams: { [key: string]: string } }) => {
+type Props = {
+  params: Promise<{ productId: string }>
+  searchParams: Promise<{ [key: string]: string }>
+}
+
+const Page = async ({ searchParams: _searchParams }: Props) => {
+  const searchParams = (await _searchParams)
 
   const filters: ProductFilter = {
     ...searchParams,
