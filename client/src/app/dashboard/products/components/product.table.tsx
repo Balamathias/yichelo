@@ -1,4 +1,6 @@
-import React from 'react';
+'use client'
+
+import React, { use, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -10,26 +12,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { getProducts } from '@/actions/product.actions';
 import { formatNigerianCurrency } from "@/lib/utils";
 import Image from "next/image";
-import { ProductFilter } from "@/@types/product";
+import { PaginatedProducts } from "@/@types/product";
 import Pagination from '../../components/pagination.server';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { LucideTrash, LucideEdit, LucideEye } from 'lucide-react';
 import Link from 'next/link';
+import DynamicModal from '@/components/dynamic-modal';
+import { useDeleteProduct } from '@/lib/react-query/product.query';
+import { DialogClose } from '@/components/ui/dialog';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface ProductTableProps {
-  filters?: ProductFilter;
+  promisedProducts: Promise<PaginatedProducts>;
 }
 
-const ProductTable = async ({ filters }: ProductTableProps) => {
-  const products = await getProducts(filters)
+const ProductTable = ({ promisedProducts }: ProductTableProps) => {
+  const products = use(promisedProducts)
   const currentPage = products?.pagination?.currentPage || 1
   const totalPages = products?.pagination?.totalPages || 1
   const itemsPerPage = products?.pagination?.itemsPerPage || 10
+
+  const { mutate: deleteProduct, isPending: deleting } = useDeleteProduct()
+  const router = useRouter()
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
   return (
     <div>
@@ -63,9 +74,45 @@ const ProductTable = async ({ filters }: ProductTableProps) => {
               </TableCell>
 
               <TableCell className="flex items-center flex-row-reverse gap-0.5">
-                <Button variant={'ghost'} size={'icon'} className='rounded-xl'>
-                  <LucideTrash className="text-red-500"/>
-                </Button>
+                <DynamicModal
+                  trigger={
+                    <Button variant={'ghost'} size={'icon'} className='rounded-xl'>
+                      <LucideTrash className="text-red-500"/>
+                    </Button>
+                  }
+                >
+                  <div className='flex flex-col gap-y-2'>
+                    <h2 className='text-lg font-semibold text-muted-foreground'>
+                      Are you sure you want to delete &quot;{product?.name}&quot;? This cannot be undone.
+                    </h2>
+
+                    <div className='flex w-full items-center gap-4 justify-end'>
+                      <DialogClose asChild>
+                        <Button className='rounded-xl'>
+                          No
+                        </Button>
+                      </DialogClose>
+                      <Button variant={'destructive'} className='rounded-xl' disabled={deleting}
+                        onClick={() => {
+                          deleteProduct(product?._id, {
+                            onSuccess: () => {
+                              toast.success('Product deleted successfully.')
+                              router.refresh()
+                              setOpenDeleteModal(false)
+                            },
+                            onError: err => {
+                              toast.error("Failed to delete product.", {
+                                description: err?.message
+                              })
+                            }
+                          })
+                        }}
+                      >
+                        {deleting ? 'Deleting...' : 'Yes'}
+                      </Button>
+                    </div>
+                  </div>
+                </DynamicModal>
                 <Button variant={'ghost'} size={'icon'} className='rounded-xl' asChild>
                   <Link href={`/dashboard/products/${product._id}/edit`}>
                     <LucideEdit />

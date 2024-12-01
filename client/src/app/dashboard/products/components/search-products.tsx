@@ -7,10 +7,10 @@ import { addQueryParams } from '@/lib/utils'
 import { LucideSearch } from 'lucide-react'
 
 const SearchProducts = () => {
-  const [keyword, setKeyword] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
   const qs = searchParams?.toString()
+  const [keyword, setKeyword] = useState(searchParams?.get('keyword') || '')
 
   
   const submitHandler = (e: React.FormEvent) => {
@@ -34,7 +34,6 @@ const SearchProducts = () => {
           name='q'
           id='q'
           value={keyword}
-          defaultValue={searchParams?.get('keyword') || ''}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder='Search Products...'
           className={'focus-visible:ring-0 focus-within:border-none border-none h-full'}

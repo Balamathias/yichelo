@@ -1,7 +1,10 @@
 import { InsertCategory, InsertProduct, PaginatedProducts, ProductFilter, UpdateProduct } from '@/@types/product'
-import { createCategory, createProduct, getProducts, getProductSuggestions, updateProduct } from '@/actions/product.actions'
+import { createCategory, createProduct, deleteProduct, getProducts, getProductSuggestions, updateProduct } from '@/actions/product.actions'
 import { useMutation, useQuery, useInfiniteQuery } from '@tanstack/react-query'
 
+export enum PRODUCT_QUERY_KEYS {
+  DELETE_PRODUCT = 'deleteProduct'
+}
 
 export const useCreateProduct = () => useMutation({
   mutationKey: ['createProduct'],
@@ -11,6 +14,11 @@ export const useCreateProduct = () => useMutation({
 export const useUpdateProduct = () => useMutation({
   mutationKey: ['updateProduct'],
   mutationFn: (data: UpdateProduct) => updateProduct(data),
+})
+
+export const useDeleteProduct = () => useMutation({
+  mutationKey: [PRODUCT_QUERY_KEYS.DELETE_PRODUCT],
+  mutationFn: (id: string) => deleteProduct(id)
 })
 
 export const useCreateCategory = () => useMutation({

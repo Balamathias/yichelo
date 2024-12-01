@@ -31,6 +31,11 @@ export const updateProduct = async (data: UpdateProduct) => {
   return product.data
 }
 
+export const deleteProduct = async (id: string) => {
+  const product = (await api.delete(`/products/${id}`))?.data
+  return product
+} 
+
 export const getCategories = async (limit?: number) => {
   const categories = await api.get<ProductCategory[]>('/categories', { params: { limit }})
   return categories.data

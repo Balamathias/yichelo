@@ -79,4 +79,5 @@ interface ProductFilter {
   page?: number;
   keyword?: string;
   tag?: string;
+  cacheable?: boolean
 }

@@ -22,7 +22,7 @@ export const addProduct = async (req: Request, res: Response) => {
 };
 
 export const getProducts = async (req: Request, res: Response) => {
-  const { category, minPrice, maxPrice, sort, limit, page, keyword, tag } = req.query;
+  const { category, minPrice, maxPrice, sort, limit, page, keyword, tag, cacheable } = req.query;
 
   const cacheKey = `products:${JSON.stringify(req.query)}`;
 
@@ -77,17 +77,19 @@ export const getProducts = async (req: Request, res: Response) => {
 
     const totalItems = await Product.countDocuments(query);
 
-    await redisClient.setex(cacheKey, 100, JSON.stringify({
-      products,
-      pagination: {
-        totalItems,
-        currentPage: pageNum,
-        itemsPerPage,
-        totalPages: Math.ceil(totalItems / itemsPerPage),
-        nextPage: pageNum < Math.ceil(totalItems / itemsPerPage) ? pageNum + 1 : null,
-        prevPage: pageNum > 1 ? pageNum - 1 : null,
-      },
-    }));
+    if (cacheable)
+      await redisClient.setex(cacheKey, 100, JSON.stringify({
+        products,
+        pagination: {
+          totalItems,
+          currentPage: pageNum,
+          itemsPerPage,
+          totalPages: Math.ceil(totalItems / itemsPerPage),
+          nextPage: pageNum < Math.ceil(totalItems / itemsPerPage) ? pageNum + 1 : null,
+          prevPage: pageNum > 1 ? pageNum - 1 : null,
+        },
+      }));
+
 
     res.status(200).json({
       products,
