@@ -4,7 +4,7 @@ import CategoryFilterItem from './category-filter-item'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const CategoryFilter = async () => {
-  const categories = await getCategories(6)
+  const categories = await getCategories({ limit: 6 })
 
   const categoryList = categories.map((category) => category.name)
 
