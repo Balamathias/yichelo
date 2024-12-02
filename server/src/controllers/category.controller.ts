@@ -14,10 +14,50 @@ export const createCategory = async (req: Request, res: Response) => {
 };
 
 export const getCategories = async (req: Request, res: Response) => {
-  const { limit } = req.query;
+  const { limit, keyword, page, sort, paginate } = req.query;
+
+  const query: any = {};
+    
+  if (keyword) {
+    query.$text = { $search: keyword as string };
+  }
+
+  const pageNum = parseInt(page as string) || 1;
+  const itemsPerPage = parseInt(limit as string) || 10;
+  const skipItems = (pageNum - 1) * itemsPerPage;
+
+  let sortOptions: any = {};
+
+  if (sort === 'name-asc') {
+    sortOptions.name = 1;
+  } else if (sort === 'name-desc') {
+    sortOptions.name = -1;
+  } else if (sort === 'newest') {
+    sortOptions.createdAt = -1;
+    sortOptions.updatedAt = -1;
+  }
+  
   try {
-    const categories = await Category.find().limit(limit ? parseInt(limit as string) : 10);
-    res.status(200).json(categories);
+    const categories = await Category.find(query)
+    .sort(sortOptions)
+    .skip(skipItems)
+    .limit(itemsPerPage);
+
+    const totalItems = await Product.countDocuments(query);
+
+    if (paginate) {
+      res.status(200).json({
+        categories,
+        pagination: {
+          totalItems,
+          currentPage: pageNum,
+          itemsPerPage,
+          totalPages: Math.ceil(totalItems / itemsPerPage),
+        },
+      })
+    } else {
+      res.status(200).json(categories);
+    }
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving categories', error });
   }

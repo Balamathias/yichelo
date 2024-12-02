@@ -35,7 +35,7 @@ const items = [
     },
     {
       title: "Categories",
-      url: "/dashboard/categories",
+      url: "/dashboard/products/categories",
       icon: ListEnd,
     },
     {

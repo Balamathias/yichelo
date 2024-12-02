@@ -52,6 +52,18 @@ export interface ProductCategory {
   thumbnail?: string;
 }
 
+export interface PaginatedProductCategories {
+  categories: ProductCategory[];
+  pagination: {
+    totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+    totalPages: number;
+    nextPage: number | null
+    prevPage: number | null
+  },
+}
+
 export interface InsertCategory {
   _id: string;
   name: string;
@@ -80,4 +92,12 @@ interface ProductFilter {
   keyword?: string;
   tag?: string;
   cacheable?: boolean
+}
+
+interface CategoryFilter {
+  sort?: 'name-asc' | 'name-desc' | 'newest';
+  limit?: number;
+  page?: number;
+  keyword?: string;
+  paginate?: boolean
 }

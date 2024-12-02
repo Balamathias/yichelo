@@ -12,4 +12,6 @@ const CategorySchema: Schema = new Schema({
   thumbnail: { type: String, default: '' },
 }, { timestamps: true });
 
+CategorySchema.index({ name: 'text', description: 'text' });
+
 export default mongoose.model<ICategory>('Category', CategorySchema);

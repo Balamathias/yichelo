@@ -10,7 +10,7 @@ import { UploadButton } from '@/lib/uploadthing'
 import { LucideLoader } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { toast } from 'sonner'
 
@@ -18,6 +18,7 @@ const NewCategoryForm = () => {
   const starter = useSearchParams().get('starter')
   const [thumbnail, setThumbnail] = React.useState<string | null>(null)
   const { mutate: createCategory, isPending: loading } = useCreateCategory()
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,6 +33,7 @@ const NewCategoryForm = () => {
       onSuccess: () => {
         toast.success('Category created successfully')
         setThumbnail(null)
+        router.replace(`/dashboard/products/categories`)
       },
       onError: (error) => {
         toast.error('Failed to create category', { description: error.message })

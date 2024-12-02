@@ -1,6 +1,6 @@
 'use server'
 
-import { InsertProduct, PaginatedProducts, Product, ProductCategory, InsertCategory, GroupedProduct, ProductFilter, UpdateProduct } from '@/@types/product';
+import { InsertProduct, PaginatedProducts, Product, ProductCategory, InsertCategory, GroupedProduct, ProductFilter, UpdateProduct, PaginatedProductCategories, CategoryFilter } from '@/@types/product';
 
 import api from '@/lib/axios.server'
 
@@ -36,9 +36,14 @@ export const deleteProduct = async (id: string) => {
   return product
 } 
 
-export const getCategories = async (limit?: number) => {
-  const categories = await api.get<ProductCategory[]>('/categories', { params: { limit }})
-  return categories.data
+export const getCategories = async <T extends boolean = false>(
+  filters?: CategoryFilter & { paginate?: T }
+): Promise<T extends true ? PaginatedProductCategories : ProductCategory[]> => {
+  const params = { ...filters, paginate: true };
+
+  const response = await api.get('/categories', { params });
+
+  return (filters?.paginate ? (response.data as PaginatedProductCategories) : (response.data as ProductCategory[])) as T extends true ? PaginatedProductCategories : ProductCategory[];
 }
 
 export const getCategory = async (id: string) => {
@@ -50,6 +55,11 @@ export const getCategory = async (id: string) => {
     return null
   }
 }
+
+export const deleteCategory = async (id: string) => {
+  const category = (await api.delete(`/categories/${id}`))?.data
+  return category
+} 
 
 export const createCategory = async (initial: any, data: InsertCategory) => {
   const category = await api.post<ProductCategory>('/categories', data)
