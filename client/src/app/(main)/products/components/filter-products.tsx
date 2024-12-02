@@ -5,7 +5,7 @@ import { getCategories } from '@/actions/product.actions'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const ProductFilters = () => {
-  const promiseCategories = getCategories(40)
+  const promiseCategories = getCategories({limit: 40})
   return (
     <div className="flex items-center justify-between">
       <Suspense
