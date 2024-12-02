@@ -62,8 +62,14 @@ export const deleteCategory = async (id: string) => {
 } 
 
 export const createCategory = async (initial: any, data: InsertCategory) => {
-  const category = await api.post<ProductCategory>('/categories', data)
-  return category.data
+  if (data?._id) {
+    const category = await api.put<ProductCategory>(`/categories/${data?._id}`, data)
+    return category.data
+  } else {
+    const category = await api.post<ProductCategory>('/categories', data)
+    return category.data
+  }
+  
 }
 
 export const updateCategory = async (initial: any, data: InsertCategory) => {

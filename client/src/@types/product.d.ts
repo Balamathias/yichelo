@@ -65,7 +65,7 @@ export interface PaginatedProductCategories {
 }
 
 export interface InsertCategory {
-  _id: string;
+  _id?: string;
   name: string;
   description?: string;
   thumbnail?: string;

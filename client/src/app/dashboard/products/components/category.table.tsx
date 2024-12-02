@@ -49,8 +49,7 @@ const CategoryTable = ({ promisedCategories }: ProductTableProps) => {
           <TableRow>
             <TableHead className="">S/N</TableHead>
             <TableHead className="">Category</TableHead>
-            <TableHead>name</TableHead>
-            <TableHead>description</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead className="">Thumbnail</TableHead>
             <TableHead className="">Actions</TableHead>
           </TableRow>
@@ -81,8 +80,10 @@ const CategoryTable = ({ promisedCategories }: ProductTableProps) => {
                 >
                   <div className='flex flex-col gap-y-2'>
                     <h2 className='text-lg font-semibold text-muted-foreground'>
-                      Are you sure you want to delete &quot;{category?.name}&quot;? This cannot be undone.
+                      Are you sure you want to delete the category &quot;{category?.name}&quot;? This cannot be undone.
                     </h2>
+
+                    <p className='text-muted-foreground'>All the Products and relations attached to this category will lose their category!</p>
 
                     <div className='flex w-full items-center gap-4 justify-end'>
                       <DialogClose asChild>
@@ -116,7 +117,7 @@ const CategoryTable = ({ promisedCategories }: ProductTableProps) => {
                     <LucideEdit />
                   </Link>
                 </Button>
-                <Button variant={'ghost'} size={'icon'} className='rounded-xl' asChild>
+                <Button variant={'ghost'} size={'icon'} className='rounded-xl hidden' asChild>
                   <Link href={`/dashboard/products/categories/${category._id}`}>
                     <LucideEye />
                   </Link>
@@ -173,7 +174,7 @@ export const CategoryTableSkeleton = () => {
               <TableCell className="flex items-center gap-0.5">
                 <Skeleton className="w-6 h-6 rounded-xl" />
                 <Skeleton className="w-6 h-6 rounded-xl" />
-                <Skeleton className="w-6 h-6 rounded-xl" />
+                <Skeleton className="w-6 h-6 rounded-xl hidden" />
               </TableCell>
             </TableRow>
           ))}
