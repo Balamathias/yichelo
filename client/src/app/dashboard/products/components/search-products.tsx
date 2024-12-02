@@ -35,7 +35,7 @@ const SearchProducts = () => {
           id='q'
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          placeholder='Search Products...'
+          placeholder='Search for anything...'
           className={'focus-visible:ring-0 focus-within:border-none border-none h-full'}
         />
       </form>
