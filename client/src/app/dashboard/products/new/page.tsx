@@ -1,17 +1,25 @@
 import { getCategories } from "@/actions/product.actions"
 import NewProductForm, { NewProductFormSkeleton } from "../components/new-product-form"
 import { Suspense } from "react"
+import { Metadata } from "next"
 
-const Page = () => {
-  const getCats = getCategories()
+type Props = {
+  params: Promise<{ productId: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export const metadata: Metadata = {
+  title: 'New Product',
+  description: 'Create a new product',
+}
+
+const Page = async ({ searchParams }: Props) => {
+  const getCats = getCategories({ limit: 100 })
   return (
     <div className='mx-auto w-full max-w-7xl px-4 md:px-12'>
-      <title>New Product</title>
-      <meta name="description" content="Create a new product" />
-      <meta name="keywords" content="new product, create product" />
 
       <div className='flex items-center justify-between w-full flex-1'>
-        <h1 className='text-xl hidden md:block font-bold'>{'New Product'}</h1>
+        <h1 className='text-xl py-4 font-semibold'>{(await searchParams)?.['starter'] || 'New Product'}</h1>
       </div>
       
       <Suspense fallback={<NewProductFormSkeleton />}>

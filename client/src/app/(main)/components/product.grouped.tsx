@@ -47,7 +47,7 @@ const ProductGroups = ({ promisedGroupedProducts }: Props) => {
       >
         <CarouselContent className='w-full'>
           {productGroups?.map((group) => (
-            <CarouselItem key={group?._id} className="basis-[80%] md:basis-[44%] lg:basis-[30%]">
+            <CarouselItem key={group?._id} className="basis-[90%] md:basis-[44%] lg:basis-[30%]">
               <div className="p-1">
                 <ProductCategoryGroup key={group._id} group={group} />
               </div>

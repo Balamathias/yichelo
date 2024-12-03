@@ -11,6 +11,8 @@ export interface IProduct extends Document {
   tags?: string[];
   rating?: number;
   badge?: string;
+  colors?: strring[],
+  sizes?: string[]
 }
 
 const ProductSchema: Schema = new Schema({
@@ -19,6 +21,8 @@ const ProductSchema: Schema = new Schema({
   price: { type: Number, required: true },
   images: { type: [String], required: true },
   features: { type: [String] },
+  colors: { type: [String], default: [] },
+  sizes: { type: [String], default: [] },
   stock: { type: Number, default: 0 },
   category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
   tags: { type: [String], default: [] },

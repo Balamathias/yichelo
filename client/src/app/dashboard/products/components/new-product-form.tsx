@@ -1,7 +1,6 @@
 'use client';
 
 import React, { use } from 'react';
-import { useActionState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 import { useSearchParams } from 'next/navigation';
-import { createProduct } from '@/actions/product.actions';
 import { UploadDropzone } from '@/lib/uploadthing';
 import Image from 'next/image';
 
@@ -37,16 +35,16 @@ interface Props {
 }
 
 const NewProductForm = ({ getCategories, product }: Props) => {
+
+  const categories = use(getCategories);
+  const router = useRouter()
+
   const { mutate: createProductAction, isPending: loading } = useCreateProduct()
   const { mutate: updateProduct, isPending: updating } = useUpdateProduct()
 
   const [images, setImages] = React.useState<string[]>(product?.images || []);
   const [features, setFeatures] = React.useState<string[]>(product?.features || ['']);
   const [tags, setTags] = React.useState<string[]>(product?.tags || ['']);
-
-  const router = useRouter()
-
-  const categories = use(getCategories);
   
   const searchParams = useSearchParams();
   const starter = searchParams.get('starter');
@@ -121,14 +119,14 @@ const NewProductForm = ({ getCategories, product }: Props) => {
           <Label htmlFor="category" className="text-muted-foreground">
             Select Product Category
           </Label>
-          <Select name="category" defaultValue={categories?.find(cat => cat?._id === product?.category)?.name}>
+          <Select name="category" defaultValue={categories?.find?.(cat => cat?._id === product?.category)?.name}>
             <SelectTrigger className="w-full border-b-2 border-secondary p-4 rounded-none h-12 border-t-0 border-x-0 focus:border-muted-foreground focus:outline-none focus:ring-0 focus-visible:ring-0 transition-colors shadow-none dark:border-secondary">
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Categories</SelectLabel>
-                {categories?.map((cat) => (
+                {categories?.map?.((cat) => (
                   <SelectItem key={cat?._id} value={cat?.name}>
                     {cat?.name}
                   </SelectItem>
@@ -149,6 +147,14 @@ const NewProductForm = ({ getCategories, product }: Props) => {
                 setImages(files.map((file) => file.url));
               }}
               className="w-full h-64 border border-muted rounded-lg flex items-center justify-center"
+              appearance={{
+                button: {
+                  backgroundColor: 'var(--secondary)',
+                  color: 'var(--foreground)',
+                  borderRadius: 'var(--rounded-xl)',
+                  cursor: 'pointer',
+                }
+              }}
             />
           )}
 

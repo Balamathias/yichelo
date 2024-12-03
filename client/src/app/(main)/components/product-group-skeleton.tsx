@@ -15,7 +15,7 @@ const ProductGroupSkeleton = () => {
       >
         <CarouselContent className='w-full'>
           {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem key={index} className="basis-[80%] md:basis-[44%] lg:basis-[30%]">
+            <CarouselItem key={index} className="basis-[90%] md:basis-[44%] lg:basis-[30%]">
               <div className="p-1">
                 <Skeleton key={index} className="w-full h-64 rounded-xl" />
               </div>

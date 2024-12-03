@@ -24,7 +24,7 @@ const Page = async ({ params }: Props) => {
       <meta name="keywords" content="new product, create product" />
 
       <div className='flex items-center justify-between w-full flex-1'>
-        <h1 className='text-xl hidden md:block font-bold'></h1>
+        <h1 className='text-xl py-4 font-semibold'>Update &quot;{product?.name}&quot;.</h1>
       </div>
       
       <Suspense fallback={<NewProductFormSkeleton />}>

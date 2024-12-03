@@ -39,10 +39,10 @@ export const deleteProduct = async (id: string) => {
 export const getCategories = async <T extends boolean = false>(
   filters?: CategoryFilter & { paginate?: T }
 ): Promise<T extends true ? PaginatedProductCategories : ProductCategory[]> => {
-  const params = { ...filters, paginate: true };
+  const params = { ...filters };
 
-  const response = await api.get('/categories', { params });
-
+  const response = await api.get('/categories', { params: { ...params } });
+  
   return (filters?.paginate ? (response.data as PaginatedProductCategories) : (response.data as ProductCategory[])) as T extends true ? PaginatedProductCategories : ProductCategory[];
 }
 

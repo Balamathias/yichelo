@@ -45,7 +45,7 @@ export const getCategories = async (req: Request, res: Response) => {
 
     const totalItems = await Product.countDocuments(query);
 
-    if (paginate) {
+    if (Boolean(paginate)) {
       res.status(200).json({
         categories,
         pagination: {
