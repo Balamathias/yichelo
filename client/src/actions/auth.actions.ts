@@ -100,7 +100,13 @@ export async function register(_initialState: any, data: FormData) {
       cookie.set('accessToken', data?.data?.accessToken as string)
       cookie.set('refreshToken', data?.data?.refreshToken as string)
 
-      redirectUrl = '/'
+      // const response = await sendVerificationOtp()
+
+      // if (response) {
+      //   redirectUrl = '/auth/verify-email'
+      // } else {
+        redirectUrl = '/'
+      // }
     }
   } catch (error: any) {
     console.error('Login failed:', error);
@@ -159,6 +165,46 @@ export const logout = async () => {
     return res.data
   } catch (error: any) {
     console.error('Logout failed:', error)
+    return error?.response?.data
+  }
+}
+
+export const sendVerificationOtp = async () => {
+  try {
+    const res = await api.post('/auth/send-verification-otp')
+    return res.data
+  } catch (error: any) {
+    console.error('Send verification OTP failed:', error)
+    return error?.response?.data
+  }
+}
+
+export const verifyEmail = async (otp: string) => {
+  try {
+    const res = await api.post('/auth/verify-email', { otp })
+    return res.data
+  } catch (error: any) {
+    console.error('Verify email failed:', error)
+    return error?.response?.data
+  }
+}
+
+export const sendResetPassword = async (email: string) => {
+  try {
+    const res = await api.post('/auth/send-reset-otp', { email })
+    return res.data
+  } catch (error: any) {
+    console.error('Send reset password OTP failed:', error)
+    return error?.response?.data
+  }
+}
+
+export const resetPassword = async (otp: string, password: string) => {
+  try {
+    const res = await api.post('/auth/reset-password', { otp, password })
+    return res.data
+  } catch (error: any) {
+    console.error('Reset password failed:', error)
     return error?.response?.data
   }
 }

@@ -106,3 +106,45 @@ export const me = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+export const sendVerificationOtpHandler = async (req: Request, res: Response) => {
+  const user = await User.findById(req?.user?._id);
+  if (!user) return res.status(404).send('User not found');
+
+  await user.sendVerificationOtp();
+  res.status(200).send('Verification OTP sent to email');
+};
+
+export const verifyEmailHandler = async (req: Request, res: Response) => {
+  const { otp } = req.body;
+  const user = await User.findById(req?.user?._id);
+  if (!user) return res.status(404).send('User not found');
+
+  const isVerified = await user.verifyEmailOtp(otp);
+  if (!isVerified) return res.status(400).send('Invalid or expired OTP');
+
+  const data = generateAndSetTokens(res, user);
+    
+  res.status(200).json({ message: 'Email verified successfully', data });
+
+};
+
+export const sendResetOtpHandler = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).send('User not found');
+
+  await user.sendResetPasswordOtp();
+  res.status(200).send('Password reset OTP sent to email');
+};
+
+export const resetPasswordHandler = async (req: Request, res: Response) => {
+  const { otp, newPassword } = req.body;
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) return res.status(404).send('User not found');
+
+  const isReset = await user.resetPasswordWithOtp(otp, newPassword);
+  if (!isReset) return res.status(400).send('Invalid or expired OTP');
+
+  res.status(200).send('Password reset successfully');
+};
