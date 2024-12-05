@@ -7,12 +7,7 @@ export const metadata: Metadata = {
   description: 'Reset your password ~ Yichelo account',
 }
 
-type Props = {
-  params: any,
-  searchParams: { [key: string]: string | undefined } | null
-}
-
-const Page = ({ searchParams }: Props) => {
+const Page = () => {
   return (
     <div className="w-full min-h-screen p-4 flex flex-col md:flex-row items-center justify-center">
       <div />
