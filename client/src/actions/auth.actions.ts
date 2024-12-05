@@ -43,7 +43,7 @@ export async function login(_initialState: any, data: FormData) {
   
   try {
     const { status, data } = await axios.post<AuthRespose>(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, 
-      { email, password },
+      { email, password, rememberMe: rememberMe === 'on' },
       { withCredentials: true }
     );
 
@@ -100,13 +100,15 @@ export async function register(_initialState: any, data: FormData) {
       cookie.set('accessToken', data?.data?.accessToken as string)
       cookie.set('refreshToken', data?.data?.refreshToken as string)
 
-      // const response = await sendVerificationOtp()
+      const user = await getUser()
 
-      // if (response) {
-      //   redirectUrl = '/auth/verify-email'
-      // } else {
+      const response = await sendVerificationOtp(user?.email as string)
+
+      if (response) {
+        redirectUrl = '/auth/verify-email'
+      } else {
         redirectUrl = '/'
-      // }
+      }
     }
   } catch (error: any) {
     console.error('Login failed:', error);
@@ -169,13 +171,13 @@ export const logout = async () => {
   }
 }
 
-export const sendVerificationOtp = async () => {
+export const sendVerificationOtp = async (email: string) => {
   try {
-    const res = await api.post('/auth/send-verification-otp')
+    const res = await api.post('/auth/send-verification-otp', { email })
     return res.data
   } catch (error: any) {
     console.error('Send verification OTP failed:', error)
-    return error?.response?.data
+    throw new Error(error?.response?.data)
   }
 }
 
@@ -185,17 +187,20 @@ export const verifyEmail = async (otp: string) => {
     return res.data
   } catch (error: any) {
     console.error('Verify email failed:', error)
-    return error?.response?.data
+    throw new Error(error?.response?.data)
   }
 }
 
 export const sendResetPassword = async (email: string) => {
   try {
     const res = await api.post('/auth/send-reset-otp', { email })
-    return res.data
+
+    if (res.status === 200) {
+      return res.data
+    }
   } catch (error: any) {
     console.error('Send reset password OTP failed:', error)
-    return error?.response?.data
+    throw new Error(error?.response)
   }
 }
 
@@ -205,6 +210,6 @@ export const resetPassword = async (otp: string, password: string) => {
     return res.data
   } catch (error: any) {
     console.error('Reset password failed:', error)
-    return error?.response?.data
+    throw error
   }
 }

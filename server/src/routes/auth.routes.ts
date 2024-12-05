@@ -12,7 +12,7 @@ router.post('/refresh', refreshTokens as any);
 router.get('/me', isAuthenticated, me as any);
 
 router.post('/send-verification-otp', isAuthenticated, sendVerificationOtpHandler as any);
-router.post('/verify-email', verifyEmailHandler as any);
+router.post('/verify-email', isAuthenticated, verifyEmailHandler as any);
 
 router.post('/send-reset-otp', sendResetOtpHandler as any);
 router.post('/reset-password', resetPasswordHandler as any);

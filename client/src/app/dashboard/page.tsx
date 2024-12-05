@@ -6,7 +6,7 @@ const Page = async () => {
   return (
     <div className='mx-auto w-full max-w-7xl p-4 md:p-10 md:px-12 flex flex-col gap-y-5'>
       <div className='flex items-center justify-between w-full flex-1 py-3 rounded-lg bg-secondary px-3 shadow'>
-        <h1 className='text-xl hidden md:block font-bold'>Dashboard</h1>
+        <h1 className='text-xl font-bold'>Dashboard</h1>
         
         <QuickActions />
       </div>

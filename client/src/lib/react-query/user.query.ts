@@ -1,5 +1,5 @@
-import { getUser } from "@/actions/auth.actions";
-import { useQuery } from "@tanstack/react-query";
+import { getUser, logout, resetPassword, sendResetPassword, sendVerificationOtp, verifyEmail } from "@/actions/auth.actions";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUser = () => useQuery({
   queryKey: ['user'],
@@ -10,3 +10,28 @@ export const useAuth = () => {
   const { data: user, isPending: loading } = useUser()
   return { user, loading }
 }
+
+export const useLogout = () => useMutation({
+  mutationKey: ['logout'],
+  mutationFn: () => logout(),
+})
+
+export const useVerifyEmail = () => useMutation({
+  mutationKey: ['verify-email'],
+  mutationFn: (otp: string) => verifyEmail(otp),
+})
+
+export const useSendVerificationOtp = () => useMutation({
+  mutationKey: ['send-verification-otp'],
+  mutationFn: (email: string) => sendVerificationOtp(email),
+})
+
+export const useSendResetPassword = () => useMutation({
+  mutationKey: ['send-reset-password'],
+  mutationFn: (email: string) => sendResetPassword(email),
+})
+
+export const useResetPassword = () => useMutation({
+  mutationKey: ['reset-password'],
+  mutationFn: ({ otp, password }:{otp: string, password: string}) => resetPassword(otp, password),
+})

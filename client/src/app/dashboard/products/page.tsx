@@ -26,7 +26,7 @@ const Page = async ({ searchParams: _searchParams }: Props) => {
 
   return (
     <div className='mx-auto w-full max-w-7xl p-4 md:p-10 md:px-12'>
-      <div className='flex items-center justify-between w-full flex-1 py-2.5'>
+      <div className='flex items-center justify-between w-full flex-1 py-2.5 gap-2.5'>
         <div className="flex items-center flex-row-reverse gap-x-1.5 max-md:justify-between">
           <h1 className='text-xl hidden md:block font-bold'>Products</h1>
           <Button variant={'secondary'} className="rounded-xl" asChild>

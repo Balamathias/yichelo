@@ -1,8 +1,8 @@
 'use client'
 
-import { ListEnd, Home, Inbox, Search, Settings2 as Settings } from "lucide-react"
+import { ListEnd, Home, Inbox, Search, Settings2 as Settings, LucideLogOut, LucideLoader } from "lucide-react"
 import { cn } from '@/lib/utils'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 
 import {
@@ -21,6 +21,11 @@ import {
 import { BRAND_NAME } from "@/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import DynamicModal from "@/components/dynamic-modal"
+import { DialogClose } from "@/components/ui/dialog"
+import { useLogout } from "@/lib/react-query/user.query"
+import { toast } from "sonner"
 
 const items = [
     {
@@ -51,7 +56,11 @@ const items = [
   ]
 
 export default function AppSidebar() {
-    const path = usePathname()
+
+    const path = usePathname();
+    const { mutate: logout, isPending: loggingOut } = useLogout();
+    const router = useRouter();
+
     return (
     <Sidebar>
         <SidebarHeader className="py-4 mb-3">
@@ -88,10 +97,43 @@ export default function AppSidebar() {
         </SidebarContent>
 
         <SidebarFooter>
-            <div className="flex flex-col gap-y-3">
+            <div className="flex flex-row gap-1.5 items-center gap-y-3">
                 <p className="text-muted-foreground">
                     &copy; {BRAND_NAME} {new Date().getFullYear()}.
                 </p>
+                <DynamicModal
+                    trigger={
+                        <Button variant={'ghost'} size={'icon'} className="rounded-xl">
+                            <LucideLogOut size={24} />
+                        </Button>
+                    }
+                >
+                    <div className="flex flex-col gap-y-3">
+                        <p className="text-lg font-semibold">Logout</p>
+                        <p className="text-muted-foreground">Are you sure you want to logout?</p>
+                        <div className="flex flex-row gap-3">
+                            <DialogClose asChild>
+                                <Button variant={'secondary'} size={'lg'} className="rounded-xl">Cancel</Button>
+                            </DialogClose>
+                            <Button variant={'default'} size={'lg'} className="rounded-xl"
+                                onClick={() => logout(undefined, {
+                                    onSuccess: () => {
+                                        toast.success('Successfully logged out.')
+                                        router.replace('/login')
+                                    },
+                                    onError: (err) => {
+                                        console.error(err)
+                                        toast.error('Failed to logout')
+                                    }
+                                })}
+                                disabled={loggingOut}
+                            >
+                                {loggingOut && <LucideLoader size={24} className="animate-spin"/>}
+                                {loggingOut ? 'Logging out...' : 'Logout'}
+                            </Button>
+                        </div>
+                    </div>
+                </DynamicModal>
             </div>
         </SidebarFooter>
     </Sidebar>

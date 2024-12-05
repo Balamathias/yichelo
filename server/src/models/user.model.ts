@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export interface IUser extends Document {
-  username: string;
+  username?: string;
   email: string;
   password: string;
   roles: ('customer' | 'seller' | 'admin') [];
@@ -19,6 +19,8 @@ export interface IUser extends Document {
   verified?: boolean;
   phone?: string;
   token?: string;
+  rememberMe?: boolean;
+  lastLogin?: Date;
   emailVerificationOtp?: string;
   emailVerificationOtpExpire?: Date;
   resetPasswordOtp?: string;
@@ -32,12 +34,16 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  username: { type: String, required: false, unique: true },
+  username: { type: String, required: false, unique: true, default: function () {
+    return `user_${Date.now()}` }
+  },
   phone: { type: String, required: false },
   roles: { type: [String], default: ['customer'] },
   firstName: { type: String, required: false },
   lastName: { type: String, required: false },
   verified: { type: Boolean, default: false },
+  rememberMe: { type: Boolean, default: false },
+  lastLogin: { type: Date },
   token: { type: String },
   viewedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
   purchasedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
@@ -113,7 +119,13 @@ UserSchema.methods.resetPasswordWithOtp = async function (otp: string, newPasswo
 };
 
 UserSchema.methods.verifyEmailOtp = async function (otp: string) {
-  return this.emailVerificationOtp === otp && this.emailVerificationOtpExpire && this.emailVerificationOtpExpire > new Date();
+  this.verified = this.emailVerificationOtp === otp && this.emailVerificationOtpExpire && this.emailVerificationOtpExpire > new Date();
+  if (this.verified) {
+    this.emailVerificationOtp = undefined;
+    this.emailVerificationOtpExpire = undefined;
+    await this.save();
+  }
+  return this.verified;
 }
 
 export default mongoose.model<IUser>('User', UserSchema);

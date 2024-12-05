@@ -52,13 +52,17 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password, rememberMe } = req.body;
   
   try {
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
+
+    user.lastLogin = new Date();
+    user.rememberMe = Boolean(rememberMe);
+    await user.save();
     
     const data = generateAndSetTokens(res, user);
     
@@ -146,5 +150,7 @@ export const resetPasswordHandler = async (req: Request, res: Response) => {
   const isReset = await user.resetPasswordWithOtp(otp, newPassword);
   if (!isReset) return res.status(400).send('Invalid or expired OTP');
 
-  res.status(200).send('Password reset successfully');
+  const data = generateAndSetTokens(res, user);
+
+  res.status(200).json({ message: 'Password reset successfully', data });
 };
