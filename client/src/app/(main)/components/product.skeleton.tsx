@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 const ProductSkeleton = () => {
   return (
-    <div className='flex flex-col gap-y-3 p-4'>
+    <div className='flex flex-col gap-y-3 p-1'>
       <Skeleton className='h-48 w-full rounded-3xl' />
       <Skeleton className='h-6 w-3/4' />
       <div className='flex flex-col gap-2'>
