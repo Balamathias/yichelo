@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Product, { IProduct } from '../models/product.model';
 import redisClient from '../config/redis.config';
 import Category from '../models/category.model';
+import { trackProductView } from './user.controller';
 
 export const addProduct = async (req: Request, res: Response) => {
   const { name, description, price, category: categoryName, images, features, stock, badge, tags } = req.body;
@@ -111,6 +112,10 @@ export const getProductById = async (req: Request, res: Response) => {
   try {
     const product = await Product.findById(id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    if (req?.user?._id) {
+      await trackProductView(req?.user?._id as string, id);
+    }
 
     res.status(200).json(product);
   } catch (error) {

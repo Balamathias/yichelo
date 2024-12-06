@@ -35,7 +35,7 @@ const AllProducts = () => {
     category,
     minPrice: (minPrice && Number(minPrice)) || undefined,
     maxPrice: (maxPrice && Number(maxPrice)) || undefined,
-    sort: sort as ProductFilter['sort']
+    sort: sort as ProductFilter['sort'] || 'newest'
   })
 
   useInfiniteScroll({ fetchNextPage, hasNextPage })

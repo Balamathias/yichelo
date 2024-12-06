@@ -35,9 +35,11 @@ const generateAndSetTokens = (res: Response, user: IUser) => {
 export const register = async (req: Request, res: Response) => {
   const { username, email, password, phone } = req.body;
 
+  if (!username || !email || !password) return res.status(400).json({ message: 'Please fill in all fields' });
+
   try {
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'Email already in use' });
+    if (existingUser) return res.status(400).json({ message: 'Email already in use, please login if you own this account.' });
 
     const user = new User({ username, email, password, phone });
     await user.save();
@@ -45,9 +47,9 @@ export const register = async (req: Request, res: Response) => {
     const data = generateAndSetTokens(res, user);
 
     res.status(201).json({ message: 'Account created successfully', data });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: error?.message, error });
   }
 };
 

@@ -36,6 +36,16 @@ export const deleteProduct = async (id: string) => {
   return product
 } 
 
+export const getRecommendedProducts = async (limit=10) => {
+  try {
+    const recommendedProducts = await api.get<Product[]>('/recommendations', { params: { limit } })
+    return recommendedProducts.data
+  } catch (error) {
+    console.error('Get recommended products failed:', error)
+    return []
+  }
+}
+
 export const getCategories = async <T extends boolean = false>(
   filters?: CategoryFilter & { paginate?: T }
 ): Promise<T extends true ? PaginatedProductCategories : ProductCategory[]> => {

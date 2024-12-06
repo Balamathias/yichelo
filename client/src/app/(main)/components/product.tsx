@@ -27,7 +27,7 @@ const Product = ({ product }: ProductProps) => {
       }
 
       <div className='flex flex-col gap-y-2'>
-        <h2 className='font-bold'>{product.name}</h2>
+        <h2 className='font-bold line-clamp-1'>{product.name}</h2>
 
         <div className='tracking-tighter'>
           <span className={cn('font-semibold text-sm', product?.discount && 'line-through text-muted-foreground')}>{formatCurrency(product.price, 'NGN')}</span>

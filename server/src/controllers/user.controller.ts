@@ -1,17 +1,25 @@
 import { Request, Response } from "express";
 
 import User from "../models/user.model";
-
+import mongoose from 'mongoose';
 
 export const trackProductView = async (userId: string, productId: string) => {
   try {
+    const productObjectId = new mongoose.Types.ObjectId(productId);
+
     const user = await User.findById(userId);
 
     if (user) {
-      if (!user.viewedProducts.includes(productId as any)) {
-        user.viewedProducts.push(productId as any);
+      if (!user.viewedProducts.some((id) => id.equals(productObjectId))) {
+        user.viewedProducts.push(productObjectId);
+
         await user.save();
+        console.log('Product view tracked successfully.');
+      } else {
+        console.log('Product already viewed.');
       }
+    } else {
+      console.log('User not found.');
     }
   } catch (error) {
     console.error('Error tracking product view:', error);
