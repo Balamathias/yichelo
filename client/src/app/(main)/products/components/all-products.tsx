@@ -31,11 +31,12 @@ const AllProducts = () => {
     error
   } = useInfiniteProducts({
     keyword: keyword,
-    limit: 30,
+    limit: 20,
     category,
     minPrice: (minPrice && Number(minPrice)) || undefined,
     maxPrice: (maxPrice && Number(maxPrice)) || undefined,
-    sort: sort as ProductFilter['sort'] || 'newest'
+    sort: sort as ProductFilter['sort'] || 'newest',
+    cacheable: true
   })
 
   useInfiniteScroll({ fetchNextPage, hasNextPage })
@@ -45,7 +46,7 @@ const AllProducts = () => {
   if (error) return (
     <div className='p-4 rounded-xl flex-col text-red-500 w-full flex items-center justify-center gap-4'>
       <LucideAlertTriangle size={40} className='' />
-      <p className='text-muted-foreground'>Oop! We could not load your products right now; please refresh or try again later</p>
+      <p className='text-muted-foreground'>Oops! We could not load your products right now; please refresh or try again later</p>
     </div>
   )
 
@@ -82,7 +83,7 @@ const AllProducts = () => {
         }
       </div>
 
-      <div className='flex items-center justify-center'>
+      <div className='flex w-full flex-col gap-y-4'>
         {
           isFetchingNextPage && (
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1.5 md:gap-5'>
