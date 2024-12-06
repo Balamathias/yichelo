@@ -92,11 +92,11 @@ export async function register(_initialState: any, data: FormData) {
   
   try {
     const { status, data } = await axios.post<AuthRespose>(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, 
-      { email, password },
+      { email, password, username },
       { withCredentials: true }
     );
 
-    if (status === 200) {
+    if (status === 201) {
       cookie.set('accessToken', data?.data?.accessToken as string)
       cookie.set('refreshToken', data?.data?.refreshToken as string)
 
