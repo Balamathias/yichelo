@@ -177,7 +177,7 @@ export const sendVerificationOtp = async (email: string) => {
     return res.data
   } catch (error: any) {
     console.error('Send verification OTP failed:', error)
-    throw new Error(error?.response?.data)
+    throw error
   }
 }
 
@@ -187,26 +187,26 @@ export const verifyEmail = async (otp: string) => {
     return res.data
   } catch (error: any) {
     console.error('Verify email failed:', error)
-    throw new Error(error?.response?.data)
+    throw error
   }
 }
 
 export const sendResetPassword = async (email: string) => {
-  try {
-    const res = await api.post('/auth/send-reset-otp', { email })
+  const res = await api.post('/auth/send-reset-otp', { email })
 
-    if (res.status === 200) {
-      return res.data
-    }
-  } catch (error: any) {
-    console.error('Send reset password OTP failed:', error)
-    throw new Error(error?.response)
-  }
+  return res.data
 }
 
 export const resetPassword = async (otp: string, password: string) => {
+  const cookie = await cookies()
   try {
     const res = await api.post('/auth/reset-password', { otp, password })
+    
+    if (res?.status === 200) {
+      cookie.set('accessToken', res?.data?.accessToken as string)
+      cookie.set('refreshToken', res?.data?.refreshToken as string)
+    }
+
     return res.data
   } catch (error: any) {
     console.error('Reset password failed:', error)

@@ -1,10 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import nodemailer from 'nodemailer';
 import generateOtp from '../utils/generate-otp';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { transporter } from '../utils/transporter';
 
 export interface IUser extends Document {
   username?: string;
@@ -67,24 +64,11 @@ UserSchema.methods.comparePassword = async function (password: string) {
   return await bcrypt.compare(password, this.password);
 };
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  from: 'Yichelo <' + process.env.EMAIL + '>',
-});
-
 UserSchema.methods.sendVerificationOtp = async function () {
   const otp = generateOtp();
   this.emailVerificationOtp = otp;
   this.emailVerificationOtpExpire = new Date(Date.now() + 10 * 60 * 1000);
   await this.save();
-
 
   await transporter.sendMail({
     to: this.email,

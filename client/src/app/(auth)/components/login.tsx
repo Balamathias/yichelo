@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
-import { BRAND_NAME } from '@/lib/utils';
+import { addQueryParams, BRAND_NAME } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LucideLoader } from 'lucide-react';
 import DynamicModal from '@/components/dynamic-modal';
@@ -32,7 +32,7 @@ export default function Login() {
     sendResetPasswordOtp(resetEmail, {
       onSuccess: () => {
         toast.success('A one-time-password has been sent to your email address.');
-        router.push('/auth/reset-password');
+        router.push('/auth/reset-password' + addQueryParams('', { email: resetEmail }));
       },
       onError: (error) => {
         toast.error('Failed to send one-time-password', {
