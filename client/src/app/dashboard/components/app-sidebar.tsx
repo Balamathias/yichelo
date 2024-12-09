@@ -1,6 +1,6 @@
 'use client'
 
-import { ListEnd, Home, Inbox, Search, Settings2 as Settings, LucideLogOut, LucideLoader } from "lucide-react"
+import { ListEnd, Home, Inbox, Search, Settings2 as Settings, LucideLogOut, LucideLoader, User } from "lucide-react"
 import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -44,9 +44,9 @@ const items = [
       icon: ListEnd,
     },
     {
-      title: "Search",
-      url: "/dashboard/search",
-      icon: Search,
+      title: "Users",
+      url: "/dashboard/users",
+      icon: User,
     },
     {
       title: "Settings",

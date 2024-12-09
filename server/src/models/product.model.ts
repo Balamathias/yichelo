@@ -11,7 +11,7 @@ export interface IProduct extends Document {
   tags?: string[];
   rating?: number;
   badge?: string;
-  colors?: strring[],
+  colors?: string[],
   sizes?: string[]
 }
 

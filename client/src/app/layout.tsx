@@ -23,6 +23,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: `${BRAND_NAME} | Home`,
   description: `${BRAND_NAME}, your ultimate electronic store for all your needs.`,
+  openGraph: {
+    images: ['/meta/logo.png']
+  }
 };
 
 async function UTSSR() {

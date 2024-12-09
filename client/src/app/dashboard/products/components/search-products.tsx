@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { addQueryParams } from '@/lib/utils'
@@ -11,6 +11,7 @@ const SearchProducts = () => {
   const searchParams = useSearchParams()
   const qs = searchParams?.toString()
   const [keyword, setKeyword] = useState(searchParams?.get('keyword') || '')
+  const path = usePathname()
 
   
   const submitHandler = (e: React.FormEvent) => {
@@ -19,7 +20,7 @@ const SearchProducts = () => {
       const url = addQueryParams(qs, { keyword })
       router.push(url)
     } else {
-      router.push('/dashboard/products')
+      router.push(path)
     }
   }
 

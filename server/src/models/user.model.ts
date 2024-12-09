@@ -13,7 +13,6 @@ export interface IUser extends Document {
   roles: ('customer' | 'seller' | 'admin') [];
   firstName?: string;
   lastName?: string;
-  comparePassword(password: string): Promise<boolean>;
   viewedProducts: mongoose.Types.ObjectId[];
   purchasedProducts: mongoose.Types.ObjectId[];
   verified?: boolean;
@@ -25,6 +24,7 @@ export interface IUser extends Document {
   emailVerificationOtpExpire?: Date;
   resetPasswordOtp?: string;
   resetPasswordOtpExpire?: Date;
+  comparePassword(password: string): Promise<boolean>;
   sendVerificationOtp(): Promise<void>;
   sendResetPasswordOtp(): Promise<void>;
   resetPasswordWithOtp(otp: string, newPassword: string): Promise<boolean>;
@@ -73,6 +73,10 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASSWORD,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
+  from: 'Yichelo <' + process.env.EMAIL + '>',
 });
 
 UserSchema.methods.sendVerificationOtp = async function () {
@@ -127,5 +131,7 @@ UserSchema.methods.verifyEmailOtp = async function (otp: string) {
   }
   return this.verified;
 }
+
+UserSchema.index({ username: 'text', email: 'text' });
 
 export default mongoose.model<IUser>('User', UserSchema);

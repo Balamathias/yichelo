@@ -6,10 +6,16 @@ import CategoryTable, { CategoryTableSkeleton } from "../components/category.tab
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { LucidePlus } from "lucide-react"
+import { Metadata } from "next"
 
 type Props = {
   params: Promise<{ productId: string }>
   searchParams: Promise<{ [key: string]: string }>
+}
+
+export const metadata: Metadata = {
+  title: 'Categories',
+  description: 'Manage your categories',
 }
 
 const Page = async ({ searchParams: _searchParams }: Props) => {

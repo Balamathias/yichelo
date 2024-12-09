@@ -6,7 +6,9 @@ import productRoutes from './routes/product.routes';
 import cartRoutes from './routes/cart.routes'
 import categoryRoutes from './routes/category.routes';
 import recommendationRoutes from './routes/recommendation.routes';
+import userRoutes from './routes/user.routes';
 import cors from 'cors';
+import { authenticate } from './middlewares/auth.middleware';
 
 const app = express();
 
@@ -22,7 +24,8 @@ app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes)
+app.use('/api/users', authenticate, userRoutes);
+app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/recommendations', recommendationRoutes);

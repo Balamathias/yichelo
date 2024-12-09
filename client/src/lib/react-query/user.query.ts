@@ -1,4 +1,5 @@
 import { getUser, logout, resetPassword, sendResetPassword, sendVerificationOtp, verifyEmail } from "@/actions/auth.actions";
+import { deleteUser } from "@/actions/user.actions";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUser = () => useQuery({
@@ -35,3 +36,8 @@ export const useResetPassword = () => useMutation({
   mutationKey: ['reset-password'],
   mutationFn: ({ otp, password }:{otp: string, password: string}) => resetPassword(otp, password),
 })
+
+export const useDeleteUser = () => useMutation({
+  mutationKey: ['delete-user'],
+  mutationFn: (userId: string) => deleteUser(userId),
+});
