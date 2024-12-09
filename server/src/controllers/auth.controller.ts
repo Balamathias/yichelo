@@ -145,7 +145,7 @@ export const sendResetOtpHandler = async (req: Request, res: Response) => {
 };
 
 export const resetPasswordHandler = async (req: Request, res: Response) => {
-  const { otp, newPassword } = req.body;
+  const { otp, password: newPassword } = req.body;
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(404).send('User not found');
 

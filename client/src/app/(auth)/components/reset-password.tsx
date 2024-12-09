@@ -63,7 +63,8 @@ export default function ResetPassword({ email }: VerifyEmailProps) {
 
     resetPassword({
       otp: data?.otp,
-      password: data?.password
+      password: data?.password,
+      email: email as string,
     }, {
       onSuccess: (data) => {
         toast.success("Password reset was successful, redirecting...")

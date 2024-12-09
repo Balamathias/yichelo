@@ -197,14 +197,14 @@ export const sendResetPassword = async (email: string) => {
   return res.data
 }
 
-export const resetPassword = async (otp: string, password: string) => {
+export const resetPassword = async (otp: string, password: string, email: string) => {
   const cookie = await cookies()
   try {
-    const res = await api.post('/auth/reset-password', { otp, password })
-    
+    const res = await api.post('/auth/reset-password', { otp, password, email })
+
     if (res?.status === 200) {
-      cookie.set('accessToken', res?.data?.accessToken as string)
-      cookie.set('refreshToken', res?.data?.refreshToken as string)
+      cookie.set('accessToken', res?.data?.data?.accessToken as string)
+      cookie.set('refreshToken', res?.data?.data?.refreshToken as string)
     }
 
     return res.data

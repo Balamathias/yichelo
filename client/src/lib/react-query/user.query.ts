@@ -34,7 +34,7 @@ export const useSendResetPassword = () => useMutation({
 
 export const useResetPassword = () => useMutation({
   mutationKey: ['reset-password'],
-  mutationFn: ({ otp, password }:{otp: string, password: string}) => resetPassword(otp, password),
+  mutationFn: ({ otp, password, email }:{otp: string, password: string, email: string}) => resetPassword(otp, password, email),
 })
 
 export const useDeleteUser = () => useMutation({
